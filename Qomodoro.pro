@@ -36,14 +36,6 @@ FORMS    += ui/mainwindow.ui \
             ui/StatsWindow.ui \
             ui/TimerWindow.ui
 
-#OTHER_FILES += \
-#    icon.rc
-
-#RESOURCES += \
-#    systray.qrc
-
-#RC_FILE += icon.rc
-
 RC_ICONS = images/icon.ico
 
 target.path = ./install
