@@ -56,6 +56,11 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::pane {
     border: 1px solid black;
@@ -80,6 +85,8 @@ QTabWidget::tab-bar:right {
 
 QTabBar::tab {
     border: 1px solid black;
+	height: 40px;
+	width: 75px;
 }
 
 QTabBar::tab:selected {

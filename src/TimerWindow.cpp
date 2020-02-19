@@ -27,15 +27,21 @@ TimerWindow::TimerWindow(QWidget *parent) :
     foreach(QString filename, pomodoroDataFiles) {
         pomodoroNames.append(filename.replace(".json", ""));
     }
+    ui->pomodoroNameComboBox->addItems(pomodoroNames);
+    ui->pomodoroNameComboBox->setEditText("");
+    ui->pomodoroNameComboBox->setStyleSheet("background-color: #444; color: white");
+    QAbstractItemModel* model = ui->pomodoroNameComboBox->model();
+    auto rows = model->rowCount(QModelIndex());
+    for (int i = 0; i < rows; ++i) {
+    QModelIndex index = model->index(i, 0);
+    model->setData(index, QSize(50, 50), Qt::SizeHintRole);
+    }
 
-    ui->name->addItems(pomodoroNames);
-    ui->name->setEditable(true);
-    ui->name->setEditText("");
-    ui->name->setStyleSheet("background-color: #444; color: white");
+
 
     connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
     connect(ui->pauseButton, &QPushButton::clicked, this, &TimerWindow::Pause);
-    connect(ui->name, &QComboBox::currentTextChanged, this, &TimerWindow::PomodoroSelected);
+    connect(ui->pomodoroNameComboBox, &QComboBox::currentTextChanged, this, &TimerWindow::PomodoroSelected);
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
 

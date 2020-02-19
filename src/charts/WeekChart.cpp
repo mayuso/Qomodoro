@@ -73,6 +73,7 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
 QChart* WeekChart::CreateChart(QBarSeries *series)
 {
     QChart *chart = new QChart();
+    chart->setTheme(QChart::ChartThemeDark);
     chart->addSeries(series);
     chart->setTitle("Weekday distribution");
     chart->setAnimationOptions(QChart::SeriesAnimations);
