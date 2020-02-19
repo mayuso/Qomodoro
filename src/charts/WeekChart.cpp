@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QLabel>
 
-#include <QBarSeries>
+
 #include <QBarSet>
 #include <QLegend>
 #include <QBarCategoryAxis>
@@ -20,9 +20,25 @@ using json = nlohmann::json;
 WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
+
+    QBarSeries *series = LoadData(pomodoroDataFiles);
+    QChart* chart = CreateChart(series);
+
+    setChart(chart);
+    setMaximumHeight(500);
+    setRenderHint(QPainter::Antialiasing);
+}
+
+WeekChart::~WeekChart()
+{
+}
+
+QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
+{
     QBarSeries *series = new QBarSeries();
 
     foreach(QString filename, pomodoroDataFiles) {
+
         try {
             std::ifstream ifs("./data/" + filename.toStdString());
             json data =  json::parse(ifs);
@@ -51,7 +67,11 @@ WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
         } catch (json::exception& e) {
         }
     }
+    return series;
+}
 
+QChart* WeekChart::CreateChart(QBarSeries *series)
+{
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Weekday distribution");
@@ -70,13 +90,5 @@ WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
 
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
-
-    setChart(chart);
-    setMaximumHeight(500);
-    setRenderHint(QPainter::Antialiasing);
-}
-
-WeekChart::~WeekChart()
-{
-
+    return chart;
 }

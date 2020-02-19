@@ -1,8 +1,10 @@
-#ifndef BARCHART_H
-#define BARCHART_H
+#ifndef WEEKCHART_H
+#define WEEKCHART_H
 
 #include <QWidget>
 #include <QChartView>
+#include <QBarSeries>
+
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -14,6 +16,10 @@ class WeekChart: public QChartView
 public:
     explicit WeekChart(QStringList pomodoroDataFiles, QWidget *parent = nullptr);
     ~WeekChart();
+
+private:
+    QBarSeries* LoadData(QStringList pomodoroDataFiles);
+    QChart* CreateChart(QBarSeries *series);
 };
 
-#endif // BARCHART_H
+#endif // WEEKCHART_H
