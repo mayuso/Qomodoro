@@ -31,10 +31,9 @@ TimerWindow::TimerWindow(QWidget *parent) :
     ui->pomodoroNameComboBox->setEditText("");
     ui->pomodoroNameComboBox->setStyleSheet("background-color: #444; color: white");
     QAbstractItemModel* model = ui->pomodoroNameComboBox->model();
-    auto rows = model->rowCount(QModelIndex());
-    for (int i = 0; i < rows; ++i) {
-    QModelIndex index = model->index(i, 0);
-    model->setData(index, QSize(50, 50), Qt::SizeHintRole);
+    for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
+        QModelIndex index = model->index(i, 0);
+        model->setData(index, QSize(50, 50), Qt::SizeHintRole);
     }
 
 
