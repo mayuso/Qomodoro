@@ -2,6 +2,9 @@ QT += core gui widgets charts
 TARGET = Qomodoro
 CONFIG += c++14
 
+# This flag is to make sure ubuntu creates an executable and not a shared object
+QMAKE_LFLAGS += -no-pie
+
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -18,6 +21,7 @@ INCLUDEPATH += include
 SOURCES  += src/main.cpp \
             src/MainWindow.cpp \
             src/Pomodoro.cpp \
+            src/DataIO.cpp \
             src/TimeLabel.cpp \
             src/StatsWindow.cpp \
             src/TimerWindow.cpp \
@@ -26,6 +30,7 @@ SOURCES  += src/main.cpp \
 HEADERS  += include/main.h \
             include/MainWindow.h \
             include/Pomodoro.h \
+            include/DataIO.h \
             include/TimeLabel.h \
             include/StatsWindow.h \
             include/TimerWindow.h \
