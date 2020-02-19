@@ -15,13 +15,11 @@ TimerWindow::TimerWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TimerWindow)
 {
-    this->pomodoro = new Pomodoro();
+    m_Pomodoro = new Pomodoro();
     ui->setupUi(this);
     setStyleSheet("background-color: #222; color: white");
 
-
-    ui->timeLabel->setText(QString::number(this->pomodoro->GetPomodoroDurationMinutes())+":00");
-
+    ui->timeLabel->setText(QString::number(m_Pomodoro->GetPomodoroDurationMinutes())+":00");
 
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);
@@ -35,11 +33,11 @@ TimerWindow::TimerWindow(QWidget *parent) :
     ui->name->setEditText("");
     ui->name->setStyleSheet("background-color: #444; color: white");
 
-    connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::startPomodoro);
-    connect(ui->pauseButton, &QPushButton::clicked, this, &TimerWindow::pause);
+    connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
+    connect(ui->pauseButton, &QPushButton::clicked, this, &TimerWindow::Pause);
     connect(ui->name, &QComboBox::currentTextChanged, this, &TimerWindow::PomodoroSelected);
-    connect(this->pomodoro, &Pomodoro::tick, this, &TimerWindow::updateTime);
-    connect(this->pomodoro, &Pomodoro::timeout, this, &TimerWindow::timeOut);
+    connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
+    connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
 
     ui->pomodoroButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
@@ -65,44 +63,44 @@ TimerWindow::~TimerWindow()
     delete ui;
 }
 
-void TimerWindow::PomodoroSelected(const QString & pomodoroName)
+void TimerWindow::PomodoroSelected(const QString& pomodoroName)
 {
-    this->pomodoro->SetName(pomodoroName);
+    m_Pomodoro->SetName(pomodoroName);
 
     ui->pomodoroButton->setEnabled(pomodoroName != QString(""));
-
 }
 
-void TimerWindow::timeOut()
+void TimerWindow::TimeOut()
 {
     ui->pomodoroButton->setEnabled(true);
     ui->pauseButton->setEnabled(false);
     emit sg_PomodoroFinished();
 }
 
-void TimerWindow::updateTime(bool isPomodoroRunning)
+void TimerWindow::UpdateTime(bool isPomodoroRunning)
 {
-    ui->timeLabel->setTime(pomodoro->getTimeLeft(), isPomodoroRunning);
+    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), isPomodoroRunning);
 }
 
-void TimerWindow::startPomodoro() {
-
+void TimerWindow::StartPomodoro()
+{
     ui->pomodoroButton->setEnabled(false);
     ui->pauseButton->setEnabled(true);
-    pomodoro->startPomodoro();
+    m_Pomodoro->StartPomodoro();
 }
 
-void TimerWindow::pause() {
-
-    if (pomodoro->isActive()) {
-        pomodoro->pause();
+void TimerWindow::Pause()
+{
+    if (m_Pomodoro->IsActive()) {
+        m_Pomodoro->Pause();
         ui->pauseButton->setText(QString("Resume"));
     } else {
-        resume();
+        Resume();
         ui->pauseButton->setText(QString("Pause"));
     }
 }
 
-void TimerWindow::resume() {
-    pomodoro->resume();
+void TimerWindow::Resume()
+{
+    m_Pomodoro->Resume();
 }

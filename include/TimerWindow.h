@@ -20,23 +20,20 @@ signals:
     void sg_PomodoroFinished();
 
 public slots:
-    void startPomodoro();
+    void StartPomodoro();
 
-    void pause();
-    void resume();
-    void timeOut();
-    void updateTime(bool isPomodoroRunning);
+    void Pause();
+    void Resume();
+    void TimeOut();
+    void UpdateTime(bool isPomodoroRunning);
     void PomodoroSelected(const QString & pomodoroName);
 
 private:
     Ui::TimerWindow *ui;
-    Pomodoro* pomodoro;
+    Pomodoro* m_Pomodoro;
 
-    void startShortBreak();
-    void startLongBreak();
-
-
-
+    void StartShortBreak();
+    void StartLongBreak();
 };
 
 #endif // TIMERWINDOW_H

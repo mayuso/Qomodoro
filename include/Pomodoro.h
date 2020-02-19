@@ -16,20 +16,16 @@ public:
     explicit Pomodoro(QObject *parent = nullptr);
     ~Pomodoro();
 
-    time_t getTimeLeft();
-    bool isActive();
+    time_t GetTimeLeft();
+    bool IsActive();
 
-    void startPomodoro();
-    void startShortBreak();
-    void startLongBreak();
-    void pause();
-    void resume();
+    void StartPomodoro();
+
+    void Pause();
+    void Resume();
 
     QString GetName() const;
     void SetName(const QString &value);
-
-    int pomodoroCounter;
-    bool isPomodoroRunning;
 
     int GetPomodoroDurationMinutes() const;
     void SetPomodoroDurationMinutes(int value);
@@ -41,24 +37,27 @@ public:
     void SetLongBreakDurationMinutes(int value);
 
 signals:
-    void tick(bool isPomodoroRunning);
-    void timeout();
+    void sg_Tick(bool isPomodoroRunning);
+    void sg_Timeout();
 
 private slots:
-    void timerTicked();
-
+    void TimerTicked();
 
 private:
     nlohmann::json MergeJSons(const nlohmann::json &a, const nlohmann::json &b);
+    void StartBreak();
+    void StartShortBreak();
+    void StartLongBreak();
 
-    time_t time_left;
-    QTimer* timer;
-    QString name;
-    nlohmann::json jsonData;
+private:
+    time_t m_TimeLeft;
+    QTimer* m_Timer;
+    QString m_Name;
 
-    int pomodoroDurationMinutes, shortBreakDurationMinutes, longBreakDurationMinutes;
+    int m_PomodoroDurationMinutes, m_ShortBreakDurationMinutes, m_LongBreakDurationMinutes;
 
-
+    int m_PomodoroCounter;
+    bool m_IsPomodoroRunning;
 };
 
 #endif // POMODORO_H

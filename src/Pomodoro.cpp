@@ -1,78 +1,78 @@
 #include "Pomodoro.h"
+#include "DataIO.h"
+
 #include <fstream>
 #include <sys/stat.h>
 #include <ctime>
+#include <QDir>
 
 using json = nlohmann::json;
-
-#include <QDir>
 
 Pomodoro::Pomodoro(QObject *parent) :
     QObject(parent)
 {
-    name = "";
-    time_left = 0;
-    timer = new QTimer();
-    timer->setInterval(1000);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timerTicked()));
+    m_Name = "";
+    m_TimeLeft = 0;
+    m_Timer = new QTimer();
+    m_Timer->setInterval(1000);
+    connect(m_Timer, SIGNAL(timeout()), this, SLOT(TimerTicked()));
 
-    pomodoroCounter = 0;
-    isPomodoroRunning = false;
+    m_PomodoroCounter = 0;
+    m_IsPomodoroRunning = false;
 
-    pomodoroDurationMinutes = 25;
-    shortBreakDurationMinutes = 5;
-    longBreakDurationMinutes = 20;
+    m_PomodoroDurationMinutes = 25;
+    m_ShortBreakDurationMinutes = 5;
+    m_LongBreakDurationMinutes = 20;
 }
 
 Pomodoro::~Pomodoro()
 {
-    delete timer;
+    delete m_Timer;
 }
 
-void Pomodoro::startPomodoro()
+void Pomodoro::StartPomodoro()
 {
-    isPomodoroRunning = true;
-    timer->stop();
-    time_left = pomodoroDurationMinutes * 60;
-    timer->start();
+    m_IsPomodoroRunning = true;
+    m_Timer->stop();
+    m_TimeLeft = m_PomodoroDurationMinutes * 60;
+    m_Timer->start();
 }
 
-void Pomodoro::startShortBreak()
+void Pomodoro::StartShortBreak()
 {
-    isPomodoroRunning = false;
-    timer->stop();
-    time_left = shortBreakDurationMinutes * 60;
-    timer->start();
+    m_IsPomodoroRunning = false;
+    m_Timer->stop();
+    m_TimeLeft = m_ShortBreakDurationMinutes * 60;
+    m_Timer->start();
 }
 
-void Pomodoro::startLongBreak()
+void Pomodoro::StartLongBreak()
 {
-    isPomodoroRunning = false;
-    timer->stop();
-    time_left = longBreakDurationMinutes * 60;
-    timer->start();
+    m_IsPomodoroRunning = false;
+    m_Timer->stop();
+    m_TimeLeft = m_LongBreakDurationMinutes * 60;
+    m_Timer->start();
 }
 
-void Pomodoro::pause()
+void Pomodoro::Pause()
 {
-    timer->stop();
+    m_Timer->stop();
 }
 
-void Pomodoro::resume()
+void Pomodoro::Resume()
 {
-    timer->start();
+    m_Timer->start();
 }
 
-
-void Pomodoro::timerTicked()
+void Pomodoro::TimerTicked()
 {
-    time_left--;
-    emit tick(isPomodoroRunning);
-    if (time_left <= 0) {
-        time_left = 0;
-        timer->stop();
+    m_TimeLeft--;
+    emit sg_Tick(m_IsPomodoroRunning);
+    if (m_TimeLeft <= 0) {
+        m_TimeLeft = 0;
+        m_Timer->stop();
 
-        if(isPomodoroRunning)
+        if(m_IsPomodoroRunning)
         {
             QDir* dir = new QDir();
 
@@ -87,90 +87,90 @@ void Pomodoro::timerTicked()
             json newPomodoro = {
                 json::object_t::value_type("end_time", endTime.toStdString()),
                 json::object_t::value_type("date", date.toStdString()),
-                json::object_t::value_type("duration", pomodoroDurationMinutes)
+                json::object_t::value_type("duration", m_PomodoroDurationMinutes)
             };
 
-            std::ifstream ifs("./data/" + name.toStdString() + ".json");
-            try
-            {
-                // APPEND TO THE EXISTING LIST
-                jsonData = json::parse(ifs);
-                jsonData += newPomodoro;
-            }
-            catch (json::exception& e)
-            {
-                // CREATE NEW DATA STRUCTURE
-                jsonData = {newPomodoro};
-            }
-            ifs.close();
-            std::ofstream myfile;
-            myfile.open ("./data/" + name.toStdString() + ".json");
-            myfile << jsonData;
-            myfile.close();
 
-            pomodoroCounter += 1;
-            if(pomodoroCounter < 4)
+            json jsonData = DataIO::LoadConfig(m_Name.toStdString());
+            if(jsonData.size() > 0)
             {
-                startShortBreak();
+                // Append new entry to the existing list
+                jsonData += newPomodoro;
             }
             else
             {
-                pomodoroCounter = 0;
-                startLongBreak();
+                // Create new entry in the empty file
+                jsonData = {newPomodoro};
             }
+            DataIO::SaveConfig(jsonData, m_Name.toStdString());
 
-            emit timeout();
+            StartBreak();
+
+            emit sg_Timeout();
         }
+    }
+}
 
+void Pomodoro::StartBreak()
+{
+    m_PomodoroCounter += 1;
+    if(m_PomodoroCounter < 4)
+    {
+        StartShortBreak();
+    }
+    else
+    {
+        m_PomodoroCounter = 0;
+        StartLongBreak();
     }
 }
 
 int Pomodoro::GetLongBreakDurationMinutes() const
 {
-    return longBreakDurationMinutes;
+    return m_LongBreakDurationMinutes;
 }
 
 void Pomodoro::SetLongBreakDurationMinutes(int value)
 {
-    longBreakDurationMinutes = value;
+    m_LongBreakDurationMinutes = value;
 }
 
 int Pomodoro::GetShortBreakDurationMinutes() const
 {
-    return shortBreakDurationMinutes;
+    return m_ShortBreakDurationMinutes;
 }
 
 void Pomodoro::SetShortBreakDurationMinutes(int value)
 {
-    shortBreakDurationMinutes = value;
+    m_ShortBreakDurationMinutes = value;
 }
 
 int Pomodoro::GetPomodoroDurationMinutes() const
 {
-    return pomodoroDurationMinutes;
+    return m_PomodoroDurationMinutes;
 }
 
 void Pomodoro::SetPomodoroDurationMinutes(int value)
 {
-    pomodoroDurationMinutes = value;
+    m_PomodoroDurationMinutes = value;
 }
 
 QString Pomodoro::GetName() const
 {
-    return name;
+    return m_Name;
 }
 
 void Pomodoro::SetName(const QString &value)
 {
-    name = value;
+    m_Name = value;
 }
 
-time_t Pomodoro::getTimeLeft()
+time_t Pomodoro::GetTimeLeft()
 {
-    return time_left;
+    return m_TimeLeft;
 }
 
-bool Pomodoro::isActive()
+bool Pomodoro::IsActive()
 {
-    return timer->isActive();
+    return m_Timer->isActive();
 }

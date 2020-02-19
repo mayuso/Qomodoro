@@ -11,15 +11,12 @@ public:
     TimeLabel(QWidget* parent = nullptr);
     ~TimeLabel();
 
-    void setTime(time_t time, bool isPomodoroRunning);
-    void setText(const QString &);
+    void SetTime(time_t time, bool isPomodoroRunning);
+    void SetText(const QString &);
 
 
 private:
-    QString formatTime(time_t seconds);
-
-    QFont* font;
-
+    QString FormatTime(time_t seconds);
 };
 
 #endif // QTIMELABEL_H
