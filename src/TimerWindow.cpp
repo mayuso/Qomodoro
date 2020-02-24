@@ -65,6 +65,10 @@ TimerWindow::TimerWindow(QWidget *parent) :
     ui->pomodoroTime->setStyleSheet(darkStyleSheet);
     ui->shortBreakTime->setStyleSheet(darkStyleSheet);
     ui->longBreakTime->setStyleSheet(darkStyleSheet);
+
+
+    ui->pomodoroButton->setEnabled(ui->pomodoroNameComboBox->currentText() != QString(""));
+
 }
 
 TimerWindow::~TimerWindow()
