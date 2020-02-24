@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>400</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>600</width>
-    <height>400</height>
+    <height>450</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -156,7 +156,7 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
 }</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
