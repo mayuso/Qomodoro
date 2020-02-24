@@ -1,7 +1,7 @@
 QT += core gui widgets charts
 TARGET = Qomodoro
 CONFIG += c++14
-VERSION = 0.1
+VERSION = 0.2
 
 # This flag is to make sure ubuntu creates an executable and not a shared object
 QMAKE_LFLAGS += -no-pie
