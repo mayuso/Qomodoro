@@ -54,14 +54,10 @@ void Pomodoro::StartLongBreak()
     m_Timer->start();
 }
 
-void Pomodoro::Pause()
+void Pomodoro::Reset()
 {
     m_Timer->stop();
-}
-
-void Pomodoro::Resume()
-{
-    m_Timer->start();
+    m_TimeLeft = m_PomodoroDurationMinutes * 60;
 }
 
 void Pomodoro::TimerTicked()
@@ -153,6 +149,7 @@ int Pomodoro::GetPomodoroDurationMinutes() const
 void Pomodoro::SetPomodoroDurationMinutes(int value)
 {
     m_PomodoroDurationMinutes = value;
+    m_TimeLeft = value * 60;
 }
 
 QString Pomodoro::GetName() const

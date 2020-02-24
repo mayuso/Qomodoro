@@ -1,4 +1,4 @@
-#include "charts/WeekChart.h"
+#include "charts/DayChart.h"
 
 #include "nlohmann/json.hpp"
 #include <fstream>
@@ -17,7 +17,7 @@
 
 using json = nlohmann::json;
 
-WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
+DayChart::DayChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
     setMinimumHeight(300);
@@ -30,11 +30,11 @@ WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
     setRenderHint(QPainter::Antialiasing);
 }
 
-WeekChart::~WeekChart()
+DayChart::~DayChart()
 {
 }
 
-QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
+QBarSeries* DayChart::LoadData(QStringList pomodoroDataFiles)
 {
     QBarSeries *series = new QBarSeries();
 
@@ -44,25 +44,21 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
             std::ifstream ifs("./data/" + filename.toStdString());
             json data =  json::parse(ifs);
 
-            int* amountOfPomodorosPerWeekday = new int[7]{0,0,0,0,0,0,0};
+            int* amountOfPomodorosPerHour = new int[24]{0};
             for (json& pomodoroData : data) {
-                QString date = QString::fromStdString(pomodoroData["date"]);
+                QString time = QString::fromStdString(pomodoroData["end_time"]);
 
-                int year = date.split("-")[0].toInt();
-                int month = date.split("-")[1].toInt();
-                int day = date.split("-")[2].toInt();
+                int hour = time.split(":")[0].toInt();
 
-                std::tm time_in = { 0, 0, 0, day, month - 1, year - 1900 };
-                std::time_t time_temp = std::mktime(&time_in);
-                const std::tm * time_out = std::localtime(&time_temp);
-
-                //Sunday == 0, Monday == 1, and so on ...
-                amountOfPomodorosPerWeekday[time_out->tm_wday] += 1;
+                //00:00 == 0, 00:01 == 1, and so on ...
+                amountOfPomodorosPerHour[hour] += 1;
             }
 
             QBarSet *set = new QBarSet(filename.replace(".json", ""));
-            *set << amountOfPomodorosPerWeekday[1] << amountOfPomodorosPerWeekday[2] << amountOfPomodorosPerWeekday[3] << amountOfPomodorosPerWeekday[4];
-            *set << amountOfPomodorosPerWeekday[5] << amountOfPomodorosPerWeekday[6] << amountOfPomodorosPerWeekday[0];
+            for(int hourIndex = 0; hourIndex < 24; ++hourIndex)
+            {
+                *set << amountOfPomodorosPerHour[hourIndex];
+            }
 
             series->append(set);
         } catch (json::exception& e) {
@@ -71,16 +67,19 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
     return series;
 }
 
-QChart* WeekChart::CreateChart(QBarSeries *series)
+QChart* DayChart::CreateChart(QBarSeries *series)
 {
     QChart *chart = new QChart();
     chart->setTheme(QChart::ChartThemeDark);
     chart->addSeries(series);
-    chart->setTitle("Pomodoros by day");
+    chart->setTitle("Pomodoros by hour");
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QStringList categories;
-    categories << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
+    categories << "00:00" << "01:00" << "02:00" << "03:00" << "04:00" << "05:00" << "06:00";
+    categories << "07:00" << "08:00" << "09:00" << "10:00" << "11:00" << "12:00" << "13:00";
+    categories << "14:00" << "15:00" << "16:00" << "17:00" << "18:00" << "19:00" << "20:00";
+    categories << "21:00" << "22:00" << "23:00" << "24:00";
     QBarCategoryAxis *axisX = new QBarCategoryAxis();
     axisX->append(categories);
     chart->addAxis(axisX, Qt::AlignBottom);

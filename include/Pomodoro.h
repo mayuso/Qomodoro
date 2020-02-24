@@ -21,8 +21,7 @@ public:
 
     void StartPomodoro();
 
-    void Pause();
-    void Resume();
+    void Reset();
 
     QString GetName() const;
     void SetName(const QString &value);

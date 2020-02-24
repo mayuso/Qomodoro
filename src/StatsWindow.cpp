@@ -2,6 +2,7 @@
 #include "ui_StatsWindow.h"
 
 #include "charts/WeekChart.h"
+#include "charts/DayChart.h"
 
 #include "nlohmann/json.hpp"
 #include <fstream>
@@ -22,6 +23,7 @@ StatsWindow::StatsWindow(QWidget *parent) :
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);
     ui->contentsLayout->addWidget(new WeekChart(pomodoroDataFiles, this));
+    ui->contentsLayout->addWidget(new DayChart(pomodoroDataFiles, this));
 }
 
 StatsWindow::~StatsWindow()

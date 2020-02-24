@@ -37,30 +37,34 @@ TimerWindow::TimerWindow(QWidget *parent) :
     }
 
 
-
     connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
-    connect(ui->pauseButton, &QPushButton::clicked, this, &TimerWindow::Pause);
+    connect(ui->resetButton, &QPushButton::clicked, this, &TimerWindow::Reset);
     connect(ui->pomodoroNameComboBox, &QComboBox::currentTextChanged, this, &TimerWindow::PomodoroSelected);
+
+    connect(ui->pomodoroTime, SIGNAL(valueChanged(int)), this, SLOT(SetPomodoroTime(int)));
+    connect(ui->shortBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetShortBreakTime(int)));
+    connect(ui->longBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetLongBreakTime(int)));
+
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
 
     ui->pomodoroButton->setEnabled(false);
-    ui->pauseButton->setEnabled(false);
+    ui->resetButton->setEnabled(false);
 
     QString foreground = "white";
     QString background = "#444";
     QString disabledForeground = "grey";
     QString disabledBackground = "#222";
 
-
-    ui->pomodoroButton->setStyleSheet(":enabled { color: " + foreground
-                                 + "; background-color: " + background
-                                 + " } :disabled { color: " + disabledForeground
-                                 + "; background-color: " + disabledBackground + " }");
-    ui->pauseButton->setStyleSheet(":enabled { color: " + foreground
-                                 + "; background-color: " + background
-                                 + " } :disabled { color: " + disabledForeground
-                                 + "; background-color: " + disabledBackground + " }");
+    QString darkStyleSheet = ":enabled { color: " + foreground
+            + "; background-color: " + background
+            + " } :disabled { color: " + disabledForeground
+            + "; background-color: " + disabledBackground + " }";
+    ui->pomodoroButton->setStyleSheet(darkStyleSheet);
+    ui->resetButton->setStyleSheet(darkStyleSheet);
+    ui->pomodoroTime->setStyleSheet(darkStyleSheet);
+    ui->shortBreakTime->setStyleSheet(darkStyleSheet);
+    ui->longBreakTime->setStyleSheet(darkStyleSheet);
 }
 
 TimerWindow::~TimerWindow()
@@ -75,10 +79,29 @@ void TimerWindow::PomodoroSelected(const QString& pomodoroName)
     ui->pomodoroButton->setEnabled(pomodoroName != QString(""));
 }
 
+void TimerWindow::SetPomodoroTime(int time)
+{
+    m_Pomodoro->SetPomodoroDurationMinutes(time);
+    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), true);
+}
+
+void TimerWindow::SetShortBreakTime(int time)
+{
+    m_Pomodoro->SetShortBreakDurationMinutes(time);
+}
+
+void TimerWindow::SetLongBreakTime(int time)
+{
+    m_Pomodoro->SetLongBreakDurationMinutes(time);
+}
+
 void TimerWindow::TimeOut()
 {
+    ui->pomodoroTime->setEnabled(true);
+    ui->shortBreakTime->setEnabled(true);
+    ui->longBreakTime->setEnabled(true);
     ui->pomodoroButton->setEnabled(true);
-    ui->pauseButton->setEnabled(false);
+    ui->resetButton->setEnabled(false);
     emit sg_PomodoroFinished();
 }
 
@@ -89,23 +112,21 @@ void TimerWindow::UpdateTime(bool isPomodoroRunning)
 
 void TimerWindow::StartPomodoro()
 {
+    ui->pomodoroTime->setEnabled(false);
+    ui->shortBreakTime->setEnabled(false);
+    ui->longBreakTime->setEnabled(false);
     ui->pomodoroButton->setEnabled(false);
-    ui->pauseButton->setEnabled(true);
+    ui->resetButton->setEnabled(true);
     m_Pomodoro->StartPomodoro();
 }
 
-void TimerWindow::Pause()
+void TimerWindow::Reset()
 {
-    if (m_Pomodoro->IsActive()) {
-        m_Pomodoro->Pause();
-        ui->pauseButton->setText(QString("Resume"));
-    } else {
-        Resume();
-        ui->pauseButton->setText(QString("Pause"));
-    }
-}
-
-void TimerWindow::Resume()
-{
-    m_Pomodoro->Resume();
+    ui->pomodoroTime->setEnabled(true);
+    ui->shortBreakTime->setEnabled(true);
+    ui->longBreakTime->setEnabled(true);
+    ui->pomodoroButton->setEnabled(true);
+    ui->resetButton->setEnabled(false);
+    m_Pomodoro->Reset();
+    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), true);
 }

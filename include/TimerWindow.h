@@ -22,11 +22,15 @@ signals:
 public slots:
     void StartPomodoro();
 
-    void Pause();
-    void Resume();
+    void Reset();
     void TimeOut();
     void UpdateTime(bool isPomodoroRunning);
     void PomodoroSelected(const QString & pomodoroName);
+
+    void SetPomodoroTime(int time);
+    void SetShortBreakTime(int time);
+    void SetLongBreakTime(int time);
+
 
 private:
     Ui::TimerWindow *ui;

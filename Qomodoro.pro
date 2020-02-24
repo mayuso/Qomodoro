@@ -25,7 +25,8 @@ SOURCES  += src/main.cpp \
             src/TimeLabel.cpp \
             src/StatsWindow.cpp \
             src/TimerWindow.cpp \
-            src/charts/WeekChart.cpp
+            src/charts/WeekChart.cpp \
+            src/charts/DayChart.cpp
 	
 HEADERS  += include/main.h \
             include/MainWindow.h \
@@ -35,6 +36,7 @@ HEADERS  += include/main.h \
             include/StatsWindow.h \
             include/TimerWindow.h \
             include/charts/WeekChart.h \
+            include/charts/DayChart.h \
             include/nlohmann/json.hpp
 
 FORMS    += ui/mainwindow.ui \
