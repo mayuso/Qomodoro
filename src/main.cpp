@@ -8,9 +8,9 @@ class MainWindow;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w(nullptr);
-
-    w.show();
+    MainWindow window(nullptr);
+    window.setWindowFlags(Qt::FramelessWindowHint);
+    window.show();
     
     return a.exec();
 }

@@ -3,7 +3,6 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <QDir>
-#include <QDebug>
 #include <QLabel>
 
 

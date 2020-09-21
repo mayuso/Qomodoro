@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 #include "TimeLabel.h"
 #include "Pomodoro.h"
+#include "TopBarTitle.h"
 
 class MainWindowPresenter;
 
@@ -20,11 +21,16 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    Ui::MainWindow *ui;
 public slots:
     void PomodoroFinished();
 
+    void MinimizeButtonClicked();
+    void MaximizeButtonClicked();
+    void CloseButtonClicked();
+
 private:
-    Ui::MainWindow *ui;
+    TopBarTitle *m_TitleBar;
 
 };
 

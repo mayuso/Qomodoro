@@ -17,7 +17,6 @@ TimerWindow::TimerWindow(QWidget *parent) :
 {
     m_Pomodoro = new Pomodoro();
     ui->setupUi(this);
-    setStyleSheet("background-color: #222; color: white");
 
     ui->timeLabel->setText(QString::number(m_Pomodoro->GetPomodoroDurationMinutes())+":00");
 
@@ -29,7 +28,6 @@ TimerWindow::TimerWindow(QWidget *parent) :
     }
     ui->pomodoroNameComboBox->addItems(pomodoroNames);
     ui->pomodoroNameComboBox->setEditText("");
-    ui->pomodoroNameComboBox->setStyleSheet("background-color: #444; color: white");
     QAbstractItemModel* model = ui->pomodoroNameComboBox->model();
     for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
         QModelIndex index = model->index(i, 0);
@@ -50,22 +48,6 @@ TimerWindow::TimerWindow(QWidget *parent) :
 
     ui->pomodoroButton->setEnabled(false);
     ui->resetButton->setEnabled(false);
-
-    QString foreground = "white";
-    QString background = "#444";
-    QString disabledForeground = "grey";
-    QString disabledBackground = "#222";
-
-    QString darkStyleSheet = ":enabled { color: " + foreground
-            + "; background-color: " + background
-            + " } :disabled { color: " + disabledForeground
-            + "; background-color: " + disabledBackground + " }";
-    ui->pomodoroButton->setStyleSheet(darkStyleSheet);
-    ui->resetButton->setStyleSheet(darkStyleSheet);
-    ui->pomodoroTime->setStyleSheet(darkStyleSheet);
-    ui->shortBreakTime->setStyleSheet(darkStyleSheet);
-    ui->longBreakTime->setStyleSheet(darkStyleSheet);
-
 
     ui->pomodoroButton->setEnabled(ui->pomodoroNameComboBox->currentText() != QString(""));
 

@@ -7,7 +7,6 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <QDir>
-#include <QDebug>
 #include <QLabel>
 
 
@@ -18,7 +17,6 @@ StatsWindow::StatsWindow(QWidget *parent) :
     ui(new Ui::StatsWindow)
 {
     ui->setupUi(this);
-    setStyleSheet("background-color: #222; color: white");
 
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);

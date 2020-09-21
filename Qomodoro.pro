@@ -21,6 +21,7 @@ INCLUDEPATH += include
 
 SOURCES  += src/main.cpp \
             src/MainWindow.cpp \
+            src/TopBarTitle.cpp \
             src/Pomodoro.cpp \
             src/DataIO.cpp \
             src/TimeLabel.cpp \
@@ -31,6 +32,7 @@ SOURCES  += src/main.cpp \
 	
 HEADERS  += include/main.h \
             include/MainWindow.h \
+            include/TopBarTitle.h \
             include/Pomodoro.h \
             include/DataIO.h \
             include/TimeLabel.h \
@@ -40,9 +42,12 @@ HEADERS  += include/main.h \
             include/charts/DayChart.h \
             include/nlohmann/json.hpp
 
-FORMS    += ui/mainwindow.ui \
+FORMS    += ui/MainWindow.ui \
             ui/StatsWindow.ui \
             ui/TimerWindow.ui
+
+RESOURCES += stylesheets/MainWindow.qss
+
 
 RC_ICONS = images/icon.ico
 
