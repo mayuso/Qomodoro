@@ -2,7 +2,6 @@
 #define POMODORO_H
 
 #include "nlohmann/json.hpp"
-
 #include <QObject>
 #include <QTimer>
 #include <time.h>
@@ -16,7 +15,7 @@ public:
     explicit Pomodoro(QObject *parent = nullptr);
     ~Pomodoro();
 
-    time_t GetTimeLeft();
+    int GetTimeLeft();
     bool IsActive();
 
     void StartPomodoro();
@@ -38,6 +37,10 @@ public:
 signals:
     void sg_Tick(bool isPomodoroRunning);
     void sg_Timeout();
+    void sg_BreakStarted();
+    void sg_BreakFinished();
+    void sg_PomodoroStarted();
+    void sg_PomodoroFinished();
 
 private slots:
     void TimerTicked();
@@ -49,7 +52,7 @@ private:
     void StartLongBreak();
 
 private:
-    time_t m_TimeLeft;
+    int m_TimeLeft;
     QTimer* m_Timer;
     QString m_Name;
 

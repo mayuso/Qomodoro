@@ -24,9 +24,8 @@ SOURCES  += src/main.cpp \
             src/TopBarTitle.cpp \
             src/Pomodoro.cpp \
             src/DataIO.cpp \
-            src/TimeLabel.cpp \
             src/StatsWindow.cpp \
-            src/TimerWindow.cpp \
+            src/CircularTimer.cpp \
             src/charts/WeekChart.cpp \
             src/charts/DayChart.cpp
 	
@@ -35,16 +34,15 @@ HEADERS  += include/main.h \
             include/TopBarTitle.h \
             include/Pomodoro.h \
             include/DataIO.h \
-            include/TimeLabel.h \
             include/StatsWindow.h \
-            include/TimerWindow.h \
+            include/CircularTimer.h \
             include/charts/WeekChart.h \
             include/charts/DayChart.h \
             include/nlohmann/json.hpp
 
 FORMS    += ui/MainWindow.ui \
             ui/StatsWindow.ui \
-            ui/TimerWindow.ui
+			ui/CircularTimer.ui
 
 RESOURCES += stylesheets/MainWindow.qss
 

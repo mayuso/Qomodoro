@@ -36,6 +36,7 @@ void Pomodoro::StartPomodoro()
     m_Timer->stop();
     m_TimeLeft = m_PomodoroDurationMinutes * 60;
     m_Timer->start();
+    emit sg_PomodoroStarted();
 }
 
 void Pomodoro::StartShortBreak()
@@ -102,8 +103,13 @@ void Pomodoro::TimerTicked()
 
             StartBreak();
 
-            emit sg_Timeout();
+            emit sg_PomodoroFinished();
         }
+        else
+        {
+            emit sg_BreakFinished();
+        }
+        emit sg_Timeout();
     }
 }
 
@@ -119,6 +125,7 @@ void Pomodoro::StartBreak()
         m_PomodoroCounter = 0;
         StartLongBreak();
     }
+    emit sg_BreakStarted();
 }
 
 int Pomodoro::GetLongBreakDurationMinutes() const
@@ -162,7 +169,7 @@ void Pomodoro::SetName(const QString &value)
     m_Name = value;
 }
 
-time_t Pomodoro::GetTimeLeft()
+int Pomodoro::GetTimeLeft()
 {
     return m_TimeLeft;
 }

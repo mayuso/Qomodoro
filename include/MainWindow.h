@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
-#include "TimeLabel.h"
 #include "Pomodoro.h"
 #include "TopBarTitle.h"
 
@@ -23,7 +22,7 @@ public:
 
     Ui::MainWindow *ui;
 public slots:
-    void PomodoroFinished();
+    void TimerFinished();
 
     void MinimizeButtonClicked();
     void MaximizeButtonClicked();

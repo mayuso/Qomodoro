@@ -55,7 +55,7 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
                 std::time_t time_temp = std::mktime(&time_in);
                 const std::tm * time_out = std::localtime(&time_temp);
 
-                //Sunday == 0, Monday == 1, and so on ...
+                //Monday == 0, Tuesday = 1, and so on ...
                 amountOfPomodorosPerWeekday[time_out->tm_wday] += 1;
             }
 
@@ -73,7 +73,6 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
 QChart* WeekChart::CreateChart(QBarSeries *series)
 {
     QChart *chart = new QChart();
-    chart->setTheme(QChart::ChartThemeDark);
     chart->addSeries(series);
     chart->setTitle("Pomodoros by day");
     chart->setAnimationOptions(QChart::SeriesAnimations);

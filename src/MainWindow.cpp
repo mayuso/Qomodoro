@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "TimerWindow.h"
+#include "CircularTimer.h"
 #include "StatsWindow.h"
 
 #include <QVBoxLayout>
@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QFile styleFile( ":/stylesheets/MainWindow.qss" );
     styleFile.open( QFile::ReadOnly );
-
-    // Apply the loaded stylesheet
     setStyleSheet( styleFile.readAll() );
 
     m_TitleBar = new TopBarTitle(this);
@@ -37,10 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
     while(ui->tabWidget->count() > 0)
         ui->tabWidget->removeTab(0);
 
-    TimerWindow* timerWindow = new TimerWindow();
-    connect(timerWindow, &TimerWindow::sg_PomodoroFinished, this, &MainWindow::PomodoroFinished);
+    CircularTimer * circularTimer = new CircularTimer;
+    connect(circularTimer, &CircularTimer::sg_TimerFinished, this, &MainWindow::TimerFinished);
 
-    ui->tabWidget->addTab(timerWindow, "Timer");
+    ui->tabWidget->addTab(circularTimer, "Timer");
     ui->tabWidget->addTab(new StatsWindow(), "Stats");
     ui->tabWidget->setCurrentIndex(0);
 }
@@ -50,13 +48,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::PomodoroFinished()
+void MainWindow::TimerFinished()
 {
     show();
     activateWindow();
     raise();
 }
-
 
 void MainWindow::MinimizeButtonClicked()
 {
@@ -71,6 +68,5 @@ void MainWindow::MaximizeButtonClicked()
 }
 void MainWindow::CloseButtonClicked()
 {
-
     close();
 }

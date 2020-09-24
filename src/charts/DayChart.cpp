@@ -69,7 +69,6 @@ QBarSeries* DayChart::LoadData(QStringList pomodoroDataFiles)
 QChart* DayChart::CreateChart(QBarSeries *series)
 {
     QChart *chart = new QChart();
-    chart->setTheme(QChart::ChartThemeDark);
     chart->addSeries(series);
     chart->setTitle("Pomodoros by hour");
     chart->setAnimationOptions(QChart::SeriesAnimations);

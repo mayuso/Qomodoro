@@ -9,7 +9,7 @@ TopBarTitle::TopBarTitle(QWidget *parent) :
      QLabel(parent)
 {
 
-    setText("Qomodoro");
+    setText("                 Qomodoro");
     setFixedHeight(35);
     setAlignment(Qt::AlignCenter);
     setAccessibleName("titleLabel");

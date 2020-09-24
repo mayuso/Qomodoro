@@ -3,7 +3,7 @@
 QLabel[accessibleName="titleLabel"] {
     background-color: #0094b2;
     color: white;
-    font-size: 15px;
+    font-size: 18px;
 }
 
 QPushButton[accessibleName="minButton"] { 
