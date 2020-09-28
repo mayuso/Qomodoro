@@ -6,6 +6,10 @@
 #include "Pomodoro.h"
 #include "TopBarTitle.h"
 
+#include "CircularTimer.h"
+#include "StatsWindow.h"
+#include "OptionsWindow.h"
+
 class MainWindowPresenter;
 
 namespace Ui {
@@ -21,6 +25,8 @@ public:
     ~MainWindow();
 
     Ui::MainWindow *ui;
+
+
 public slots:
     void TimerFinished();
 
@@ -30,6 +36,10 @@ public slots:
 
 private:
     TopBarTitle *m_TitleBar;
+
+    StatsWindow *m_StatsWindow;
+    OptionsWindow *m_OptionsWindow;
+    CircularTimer *m_CircularTimer;
 
 };
 

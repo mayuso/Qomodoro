@@ -75,6 +75,7 @@ QChart* WeekChart::CreateChart(QBarSeries *series)
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Pomodoros by day");
+    chart->setBackgroundVisible(false);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QStringList categories;

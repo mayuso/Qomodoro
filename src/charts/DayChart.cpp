@@ -71,6 +71,7 @@ QChart* DayChart::CreateChart(QBarSeries *series)
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Pomodoros by hour");
+    chart->setBackgroundVisible(false);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QStringList categories;

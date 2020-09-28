@@ -1,0 +1,47 @@
+/* ------------------------------- PLAY AND RESET BUTTONS ------------------------------- */
+
+QPushButton {
+    background-color: transparent;
+    outline: none;
+}
+
+/* ------------------------------- POMODORO NAME SELECTOR ------------------------------- */
+
+QComboBox {
+
+  border: 0px solid #A0A0A0;
+  selection-background-color: #A0A0A0;
+  selection-color: #FFFFFF;
+}
+
+QComboBox:enabled {
+  background: #FAFAFA;
+}
+QComboBox:disabled {
+  background: transparent;
+}
+
+
+QComboBox:!editable,
+QComboBox::drop-down:editable,
+QComboBox:!editable:on,
+QComboBox::drop-down:editable:on {
+  background: transparent;
+}
+
+QComboBox::drop-down {
+  width: 40px;
+  height: 40px;
+}
+
+QComboBox::down-arrow {
+  image: url(:/images/dropdown_arrow.png);
+}
+QComboBox::down-arrow::disabled {
+  image: url(:/images/dropdown_arrow_disabled.png);
+}
+
+QComboBox QAbstractItemView {
+  background: #F0F0F0;
+  border: none;
+}

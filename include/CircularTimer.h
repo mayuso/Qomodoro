@@ -31,7 +31,7 @@ public slots:
 
     void Reset();
     void TimeOut();
-    void UpdateTime(bool isPomodoroRunning);
+    void UpdateTime();
     void PomodoroSelected(const QString & pomodoroName);
 
     void SetPomodoroTime(int time);

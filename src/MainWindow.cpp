@@ -1,9 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "CircularTimer.h"
-#include "StatsWindow.h"
-
 #include <QVBoxLayout>
 #include <QShortcut>
 #include <QDir>
@@ -35,11 +32,21 @@ MainWindow::MainWindow(QWidget *parent) :
     while(ui->tabWidget->count() > 0)
         ui->tabWidget->removeTab(0);
 
-    CircularTimer * circularTimer = new CircularTimer;
-    connect(circularTimer, &CircularTimer::sg_TimerFinished, this, &MainWindow::TimerFinished);
+    m_CircularTimer = new CircularTimer;
+    connect(m_CircularTimer, &CircularTimer::sg_TimerFinished, this, &MainWindow::TimerFinished);
 
-    ui->tabWidget->addTab(circularTimer, "Timer");
-    ui->tabWidget->addTab(new StatsWindow(), "Stats");
+
+    m_StatsWindow = new StatsWindow();
+    m_OptionsWindow = new OptionsWindow();
+
+    //connect(m_CircularTimer, SIGNAL(sg_EnableOptionControls(bool)), m_OptionsWindow, SLOT(SetControlsEnabled(bool)));
+    connect(m_OptionsWindow, SIGNAL(sg_PomodoroTimeChanged(int)), m_CircularTimer, SLOT(SetPomodoroTime(int)));
+    connect(m_OptionsWindow, SIGNAL(sg_ShortBreakTimeChanged(int)), m_CircularTimer, SLOT(SetShortBreakTime(int)));
+    connect(m_OptionsWindow, SIGNAL(sg_LongBreakTimeChanged(int)), m_CircularTimer, SLOT(SetLongBreakTime(int)));
+
+    ui->tabWidget->addTab(m_CircularTimer, "Timer");
+    ui->tabWidget->addTab(m_StatsWindow, "Stats");
+    ui->tabWidget->addTab(m_OptionsWindow, "Options");
     ui->tabWidget->setCurrentIndex(0);
 }
 

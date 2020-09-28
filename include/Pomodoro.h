@@ -35,7 +35,7 @@ public:
     void SetLongBreakDurationMinutes(int value);
 
 signals:
-    void sg_Tick(bool isPomodoroRunning);
+    void sg_Tick();
     void sg_Timeout();
     void sg_BreakStarted();
     void sg_BreakFinished();

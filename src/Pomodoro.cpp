@@ -64,7 +64,7 @@ void Pomodoro::Reset()
 void Pomodoro::TimerTicked()
 {
     m_TimeLeft--;
-    emit sg_Tick(m_IsPomodoroRunning);
+    emit sg_Tick();
     if (m_TimeLeft <= 0) {
         m_TimeLeft = 0;
         m_Timer->stop();

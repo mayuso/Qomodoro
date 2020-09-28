@@ -4,13 +4,9 @@
 #include "charts/WeekChart.h"
 #include "charts/DayChart.h"
 
-#include "nlohmann/json.hpp"
 #include <fstream>
 #include <QDir>
-#include <QLabel>
 
-
-using json = nlohmann::json;
 
 StatsWindow::StatsWindow(QWidget *parent) :
     QWidget(parent),

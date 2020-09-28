@@ -11,7 +11,22 @@ CircularTimer::CircularTimer(QWidget * parent) :
     ui(new Ui::CircularTimer)
 {
     ui->setupUi(this);
+
+    QPixmap playPixmap(":/images/play.png");
+    QPixmap stopPixamp(":/images/stop.png");
+
+    ui->pomodoroButton->setIcon(QIcon(playPixmap));
+    ui->resetButton->setIcon(QIcon(stopPixamp));
+
+    ui->pomodoroButton->setIconSize(playPixmap.rect().size()/2);
+    ui->resetButton->setIconSize(stopPixamp.rect().size()/2);
+
+    QFile styleFile( ":/stylesheets/CircularTimer.qss" );
+    styleFile.open( QFile::ReadOnly );
+    setStyleSheet( styleFile.readAll() );
+
     m_Pomodoro = new Pomodoro(this);
+
 
 
     QDir directory("data");
@@ -32,10 +47,6 @@ CircularTimer::CircularTimer(QWidget * parent) :
     connect(ui->resetButton, &QPushButton::clicked, this, &CircularTimer::Reset);
     connect(ui->pomodoroNameComboBox, &QComboBox::currentTextChanged, this, &CircularTimer::PomodoroSelected);
 
-    connect(ui->pomodoroTime, SIGNAL(valueChanged(int)), this, SLOT(SetPomodoroTime(int)));
-    connect(ui->shortBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetShortBreakTime(int)));
-    connect(ui->longBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetLongBreakTime(int)));
-
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &CircularTimer::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &CircularTimer::TimeOut);
 
@@ -43,6 +54,8 @@ CircularTimer::CircularTimer(QWidget * parent) :
     ui->pomodoroButton->setEnabled(ui->pomodoroNameComboBox->currentText() != QString(""));
 
     upd((qreal)m_Pomodoro->GetPomodoroDurationMinutes() / 60);
+
+
 }
 
 CircularTimer::~CircularTimer()
@@ -51,9 +64,9 @@ CircularTimer::~CircularTimer()
 }
 
 void CircularTimer::upd(qreal pp) {
-  if (p == pp) return;
-  p = pp;
-  update();
+    if (p == pp) return;
+    p = pp;
+    update();
 }
 
 void CircularTimer::paintEvent(QPaintEvent *) {
@@ -120,15 +133,13 @@ void CircularTimer::SetLongBreakTime(int time)
 
 void CircularTimer::TimeOut()
 {
-    ui->pomodoroTime->setEnabled(true);
-    ui->shortBreakTime->setEnabled(true);
-    ui->longBreakTime->setEnabled(true);
     ui->pomodoroButton->setEnabled(true);
     ui->resetButton->setEnabled(false);
+    ui->pomodoroNameComboBox->setEnabled(true);
     emit sg_TimerFinished();
 }
 
-void CircularTimer::UpdateTime(bool isPomodoroRunning)
+void CircularTimer::UpdateTime()
 {
 
     upd((qreal)m_Pomodoro->GetTimeLeft() / 3600);
@@ -136,22 +147,18 @@ void CircularTimer::UpdateTime(bool isPomodoroRunning)
 
 void CircularTimer::StartPomodoro()
 {
-    ui->pomodoroTime->setEnabled(false);
-    ui->shortBreakTime->setEnabled(false);
-    ui->longBreakTime->setEnabled(false);
     ui->pomodoroButton->setEnabled(false);
     ui->resetButton->setEnabled(true);
+    ui->pomodoroNameComboBox->setEnabled(false);
     m_Pomodoro->StartPomodoro();
     ui->statusLabel->setText("");
 }
 
 void CircularTimer::Reset()
 {
-    ui->pomodoroTime->setEnabled(true);
-    ui->shortBreakTime->setEnabled(true);
-    ui->longBreakTime->setEnabled(true);
     ui->pomodoroButton->setEnabled(true);
     ui->resetButton->setEnabled(false);
+    ui->pomodoroNameComboBox->setEnabled(true);
     m_Pomodoro->Reset();
     upd((qreal)m_Pomodoro->GetTimeLeft() / 3600);
     ui->statusLabel->setText("");

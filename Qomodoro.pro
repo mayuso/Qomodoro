@@ -25,16 +25,17 @@ SOURCES  += src/main.cpp \
             src/Pomodoro.cpp \
             src/DataIO.cpp \
             src/StatsWindow.cpp \
+            src/OptionsWindow.cpp \
             src/CircularTimer.cpp \
             src/charts/WeekChart.cpp \
             src/charts/DayChart.cpp
 	
-HEADERS  += include/main.h \
-            include/MainWindow.h \
+HEADERS  += include/MainWindow.h \
             include/TopBarTitle.h \
             include/Pomodoro.h \
             include/DataIO.h \
             include/StatsWindow.h \
+            include/OptionsWindow.h \
             include/CircularTimer.h \
             include/charts/WeekChart.h \
             include/charts/DayChart.h \
@@ -42,9 +43,10 @@ HEADERS  += include/main.h \
 
 FORMS    += ui/MainWindow.ui \
             ui/StatsWindow.ui \
-			ui/CircularTimer.ui
+            ui/OptionsWindow.ui \
+            ui/CircularTimer.ui
 
-RESOURCES += stylesheets/MainWindow.qss
+RESOURCES += resources.qrc
 
 
 RC_ICONS = images/icon.ico
