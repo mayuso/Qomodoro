@@ -59,7 +59,7 @@ private:
     int m_PomodoroDurationMinutes, m_ShortBreakDurationMinutes, m_LongBreakDurationMinutes;
 
     int m_PomodoroCounter;
-    bool m_IsPomodoroRunning;
+    bool m_IsPomodoroRunning, m_IsBreakRunning;
 };
 
 #endif // POMODORO_H

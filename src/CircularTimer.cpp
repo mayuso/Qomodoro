@@ -50,17 +50,30 @@ CircularTimer::CircularTimer(QWidget * parent) :
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &CircularTimer::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &CircularTimer::TimeOut);
 
+
+    connect(m_Pomodoro, &Pomodoro::sg_BreakFinished, this, &CircularTimer::BreakFinished);
+    connect(m_Pomodoro, &Pomodoro::sg_PomodoroFinished, this, &CircularTimer::PomodoroFinished);
+    connect(m_Pomodoro, &Pomodoro::sg_BreakStarted, this, &CircularTimer::BreakStarted);
+    connect(m_Pomodoro, &Pomodoro::sg_PomodoroStarted, this, &CircularTimer::PomodoroStarted);
+
     ui->resetButton->setEnabled(false);
     ui->pomodoroButton->setEnabled(ui->pomodoroNameComboBox->currentText() != QString(""));
 
     upd((qreal)m_Pomodoro->GetPomodoroDurationMinutes() / 60);
 
 
+    SetCircularBarColor(new QColor("#C0C0C0"));
+
 }
 
 CircularTimer::~CircularTimer()
 {
     delete ui;
+}
+
+void CircularTimer::SetCircularBarColor(QColor* m_Color)
+{
+    m_CircularBarColor = m_Color;
 }
 
 void CircularTimer::upd(qreal pp) {
@@ -81,7 +94,7 @@ void CircularTimer::paintEvent(QPaintEvent *) {
     path.arcTo(QRectF(0, 0, this->width()-(this->width()*0.04), this->width()-(this->width()*0.04)), 90, -pd);
     QPen pen, pen2;
     pen.setCapStyle(Qt::FlatCap);
-    pen.setColor(QColor("#30b7e0"));
+    pen.setColor(*m_CircularBarColor);
     pen.setWidth(12);
     p.strokePath(path, pen);
     path2.moveTo((this->width()-(this->width()*0.04))/2, 0);
@@ -129,6 +142,25 @@ void CircularTimer::SetShortBreakTime(int time)
 void CircularTimer::SetLongBreakTime(int time)
 {
     m_Pomodoro->SetLongBreakDurationMinutes(time);
+}
+
+void CircularTimer::PomodoroFinished()
+{
+    SetCircularBarColor(new QColor("#C0C0C0"));
+}
+
+void CircularTimer::BreakFinished()
+{
+    SetCircularBarColor(new QColor("#C0C0C0"));
+}
+void CircularTimer::PomodoroStarted()
+{
+    SetCircularBarColor(new QColor("#30b7e0"));
+}
+
+void CircularTimer::BreakStarted()
+{
+    SetCircularBarColor(new QColor("#00ff1f"));
 }
 
 void CircularTimer::TimeOut()

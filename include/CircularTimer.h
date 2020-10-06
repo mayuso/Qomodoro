@@ -24,6 +24,7 @@ public:
     void resizeEvent(QResizeEvent *event) override;
     void upd(qreal pp);
 
+    void SetCircularBarColor(QColor*);
 
 
 public slots:
@@ -38,6 +39,12 @@ public slots:
     void SetShortBreakTime(int time);
     void SetLongBreakTime(int time);
 
+    void PomodoroFinished();
+    void BreakFinished();
+    void PomodoroStarted();
+    void BreakStarted();
+
+
 signals:
     void sg_TimerFinished();
 
@@ -46,6 +53,7 @@ private:
     TopBarTitle *m_TitleBar;
 
     Pomodoro* m_Pomodoro;
+    QColor *m_CircularBarColor;
 
 };
 

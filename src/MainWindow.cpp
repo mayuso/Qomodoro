@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_OptionsWindow, SIGNAL(sg_ShortBreakTimeChanged(int)), m_CircularTimer, SLOT(SetShortBreakTime(int)));
     connect(m_OptionsWindow, SIGNAL(sg_LongBreakTimeChanged(int)), m_CircularTimer, SLOT(SetLongBreakTime(int)));
 
+
     ui->tabWidget->addTab(m_CircularTimer, "Timer");
     ui->tabWidget->addTab(m_StatsWindow, "Stats");
     ui->tabWidget->addTab(m_OptionsWindow, "Options");

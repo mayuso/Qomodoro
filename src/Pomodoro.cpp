@@ -33,6 +33,7 @@ Pomodoro::~Pomodoro()
 void Pomodoro::StartPomodoro()
 {
     m_IsPomodoroRunning = true;
+    m_IsBreakRunning = false;
     m_Timer->stop();
     m_TimeLeft = m_PomodoroDurationMinutes * 60;
     m_Timer->start();
@@ -42,6 +43,7 @@ void Pomodoro::StartPomodoro()
 void Pomodoro::StartShortBreak()
 {
     m_IsPomodoroRunning = false;
+    m_IsBreakRunning = true;
     m_Timer->stop();
     m_TimeLeft = m_ShortBreakDurationMinutes * 60;
     m_Timer->start();
@@ -50,6 +52,7 @@ void Pomodoro::StartShortBreak()
 void Pomodoro::StartLongBreak()
 {
     m_IsPomodoroRunning = false;
+    m_IsBreakRunning = true;
     m_Timer->stop();
     m_TimeLeft = m_LongBreakDurationMinutes * 60;
     m_Timer->start();
@@ -57,8 +60,11 @@ void Pomodoro::StartLongBreak()
 
 void Pomodoro::Reset()
 {
+    m_IsPomodoroRunning = false;
+    m_IsBreakRunning = false;
     m_Timer->stop();
     m_TimeLeft = m_PomodoroDurationMinutes * 60;
+    emit sg_PomodoroFinished();
 }
 
 void Pomodoro::TimerTicked()
@@ -101,9 +107,8 @@ void Pomodoro::TimerTicked()
             }
             DataIO::SaveConfig(jsonData, m_Name.toStdString());
 
-            StartBreak();
-
             emit sg_PomodoroFinished();
+            StartBreak();
         }
         else
         {
@@ -115,6 +120,8 @@ void Pomodoro::TimerTicked()
 
 void Pomodoro::StartBreak()
 {
+    m_IsPomodoroRunning = false;
+    m_IsBreakRunning = true;
     m_PomodoroCounter += 1;
     if(m_PomodoroCounter < 4)
     {
@@ -136,6 +143,8 @@ int Pomodoro::GetLongBreakDurationMinutes() const
 void Pomodoro::SetLongBreakDurationMinutes(int value)
 {
     m_LongBreakDurationMinutes = value;
+    if(!m_IsBreakRunning && !m_IsPomodoroRunning)
+        m_TimeLeft = value * 60;
 }
 
 int Pomodoro::GetShortBreakDurationMinutes() const
@@ -146,6 +155,8 @@ int Pomodoro::GetShortBreakDurationMinutes() const
 void Pomodoro::SetShortBreakDurationMinutes(int value)
 {
     m_ShortBreakDurationMinutes = value;
+    if(!m_IsBreakRunning && !m_IsPomodoroRunning)
+        m_TimeLeft = value * 60;
 }
 
 int Pomodoro::GetPomodoroDurationMinutes() const
@@ -156,7 +167,8 @@ int Pomodoro::GetPomodoroDurationMinutes() const
 void Pomodoro::SetPomodoroDurationMinutes(int value)
 {
     m_PomodoroDurationMinutes = value;
-    m_TimeLeft = value * 60;
+    if(!m_IsBreakRunning && !m_IsPomodoroRunning)
+        m_TimeLeft = value * 60;
 }
 
 QString Pomodoro::GetName() const
