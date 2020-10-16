@@ -1,6 +1,6 @@
 #include "charts/WeekChart.h"
 
-#include "nlohmann/json.hpp"
+#include "../vendor/json/single_include/nlohmann/json.hpp"
 #include <fstream>
 #include <QDir>
 #include <QLabel>

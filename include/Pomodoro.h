@@ -1,7 +1,7 @@
 #ifndef POMODORO_H
 #define POMODORO_H
 
-#include "nlohmann/json.hpp"
+#include "../vendor/json/single_include/nlohmann/json.hpp"
 #include <QObject>
 #include <QTimer>
 #include <time.h>

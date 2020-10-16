@@ -1,7 +1,7 @@
 #ifndef DATAIO_H
 #define DATAIO_H
 
-#include "nlohmann/json.hpp"
+#include "../vendor/json/single_include/nlohmann/json.hpp"
 
 class DataIO
 {
