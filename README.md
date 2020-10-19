@@ -2,8 +2,10 @@
 
 Qomodoro is a pomodoro timer and tracker. 
 
-<p align="left">
+<p align="center">
   <img src="otherResources/readmeGif.gif"  align="middle" width="354" width="400" />
+</p>
+<p align="center">
   <img src="otherResources/screenshot1.png" align="middle" width="500" width="800" /> 
 </p>
 
