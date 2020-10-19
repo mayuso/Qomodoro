@@ -15,6 +15,6 @@ You can see the known bugs and planned enhancements on our [issues list](https:/
 
 ### Installing
 
-No installation needed, just download the compressed package containing the software and `Qomodoro.exe``.
+No installation needed, just download the latest version, extract the software and run `Qomodoro.exe``.
 
 [Download the latest version here](https://github.com/mayuso/Qomodoro/releases)
