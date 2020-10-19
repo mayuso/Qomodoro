@@ -2,13 +2,17 @@
 
 Qomodoro is a pomodoro timer and tracker. 
 
-
-<p align="center">
-  <img width="443" height="500" src="otherResources/readmeGif.gif">
+<p align="left">
+  <img src="otherResources/readmeGif.gif"  align="middle" width="354" width="400" />
+  <img src="otherResources/screenshot1.png" align="middle" width="500" width="800" /> 
 </p>
 
-<p align="center">
-  <img width="875" height="500" src="otherResources/screenshot1.png">
-</p>
+### Roadmap
 
-[Download the latest version here](https://github.com/mayuso/JMarkPad/releases)
+You can see the known bugs and planned enhancements on our [issues list](https://github.com/mayuso/Qomodoro/issues).
+
+### Installing
+
+No installation needed, just download the compressed package containing the software and `Qomodoro.exe``.
+
+[Download the latest version here](https://github.com/mayuso/Qomodoro/releases)
