@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QDir>
+#include <QPainterPath>
 
 CircularTimer::CircularTimer(QWidget * parent) :
     QWidget(parent),
