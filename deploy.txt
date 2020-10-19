@@ -1,0 +1,1 @@
+windeployqt Qomodoro.exe --no-translations --no-opengl-sw --compiler-runtime
