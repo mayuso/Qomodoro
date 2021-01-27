@@ -2,10 +2,6 @@
 #define OPTIONSWINDOW_H
 
 #include <QWidget>
-#include <QChartView>
-
-
-QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
 class OptionsWindow;

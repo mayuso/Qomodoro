@@ -9,8 +9,8 @@ TopBarTitle::TopBarTitle(QWidget *parent) :
      QLabel(parent)
 {
 
-    setText("                 Qomodoro");
-    setFixedHeight(35);
+    setText("             Qomodoro");
+    setFixedHeight(45);
     setAlignment(Qt::AlignCenter);
     setAccessibleName("titleLabel");
 }
@@ -29,7 +29,7 @@ void TopBarTitle::mouseMoveEvent(QMouseEvent *event)
     {
         m_End = mapToGlobal(event->pos());
         QPoint movement = m_End-m_Start;
-        parentWidget()->parentWidget()->parentWidget()->setGeometry(mapToGlobal(movement).x(),
+        parentWidget()->parentWidget()->parentWidget()->setGeometry(mapToGlobal(movement).x()-45, // 45 to compensate for the menuButton width
                             mapToGlobal(movement).y(),
                             ((MainWindow*)parentWidget()->parentWidget()->parentWidget())->width(),
                             ((MainWindow*)parentWidget()->parentWidget()->parentWidget())->height());

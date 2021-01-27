@@ -3,7 +3,7 @@
         <file>images/play.png</file>
         <file>images/stop.png</file>
         <file>stylesheets/MainWindow.qss</file>
-        <file>stylesheets/CircularTimer.qss</file>
+        <file>stylesheets/TimerWindow.qss</file>
         <file>images/dropdown_arrow.png</file>
         <file>images/dropdown_arrow_disabled.png</file>
     </qresource>

@@ -11,18 +11,20 @@ using json = nlohmann::json;
 Pomodoro::Pomodoro(QObject *parent) :
     QObject(parent)
 {
-    m_Name = "";
     m_TimeLeft = 0;
+    m_IntervalMiliseconds = 50;
     m_Timer = new QTimer();
-    m_Timer->setInterval(1000);
+    m_Timer->setInterval(m_IntervalMiliseconds);
+    m_Timer->setTimerType(Qt::PreciseTimer);
     connect(m_Timer, SIGNAL(timeout()), this, SLOT(TimerTicked()));
 
     m_PomodoroCounter = 0;
     m_IsPomodoroRunning = false;
 
-    m_PomodoroDurationMinutes = 25;
+    m_PomodoroDurationMinutes = 2;
     m_ShortBreakDurationMinutes = 5;
     m_LongBreakDurationMinutes = 20;
+    m_CurrentTaskTime = m_PomodoroDurationMinutes;
 }
 
 Pomodoro::~Pomodoro()
@@ -35,7 +37,8 @@ void Pomodoro::StartPomodoro()
     m_IsPomodoroRunning = true;
     m_IsBreakRunning = false;
     m_Timer->stop();
-    m_TimeLeft = m_PomodoroDurationMinutes * 60;
+    m_TimeLeft = m_PomodoroDurationMinutes * 60 * (1000 / m_IntervalMiliseconds);
+    m_CurrentTaskTime = m_TimeLeft;
     m_Timer->start();
     emit sg_PomodoroStarted();
 }
@@ -45,7 +48,8 @@ void Pomodoro::StartShortBreak()
     m_IsPomodoroRunning = false;
     m_IsBreakRunning = true;
     m_Timer->stop();
-    m_TimeLeft = m_ShortBreakDurationMinutes * 60;
+    m_TimeLeft = m_ShortBreakDurationMinutes * 60 * (1000 / m_IntervalMiliseconds);
+    m_CurrentTaskTime = m_TimeLeft;
     m_Timer->start();
 }
 
@@ -54,7 +58,8 @@ void Pomodoro::StartLongBreak()
     m_IsPomodoroRunning = false;
     m_IsBreakRunning = true;
     m_Timer->stop();
-    m_TimeLeft = m_LongBreakDurationMinutes * 60;
+    m_TimeLeft = m_LongBreakDurationMinutes * 60 * (1000 / m_IntervalMiliseconds);
+    m_CurrentTaskTime = m_TimeLeft;
     m_Timer->start();
 }
 
@@ -63,7 +68,8 @@ void Pomodoro::Reset()
     m_IsPomodoroRunning = false;
     m_IsBreakRunning = false;
     m_Timer->stop();
-    m_TimeLeft = m_PomodoroDurationMinutes * 60;
+    m_TimeLeft = m_PomodoroDurationMinutes * 60 * (1000 / m_IntervalMiliseconds);
+    m_CurrentTaskTime = m_TimeLeft;
     emit sg_PomodoroFinished();
 }
 
@@ -71,6 +77,7 @@ void Pomodoro::TimerTicked()
 {
     m_TimeLeft--;
     emit sg_Tick();
+
     if (m_TimeLeft <= 0) {
         m_TimeLeft = 0;
         m_Timer->stop();
@@ -94,7 +101,7 @@ void Pomodoro::TimerTicked()
             };
 
 
-            json jsonData = DataIO::LoadConfig(m_Name.toStdString());
+            json jsonData = DataIO::LoadConfig();
             if(jsonData.size() > 0)
             {
                 // Append new entry to the existing list
@@ -105,7 +112,7 @@ void Pomodoro::TimerTicked()
                 // Create new entry in the empty file
                 jsonData = {newPomodoro};
             }
-            DataIO::SaveConfig(jsonData, m_Name.toStdString());
+            DataIO::SaveConfig(jsonData);
 
             emit sg_PomodoroFinished();
             StartBreak();
@@ -144,7 +151,7 @@ void Pomodoro::SetLongBreakDurationMinutes(int value)
 {
     m_LongBreakDurationMinutes = value;
     if(!m_IsBreakRunning && !m_IsPomodoroRunning)
-        m_TimeLeft = value * 60;
+        m_TimeLeft = value * 60 * (1000 / m_IntervalMiliseconds);
 }
 
 int Pomodoro::GetShortBreakDurationMinutes() const
@@ -156,7 +163,7 @@ void Pomodoro::SetShortBreakDurationMinutes(int value)
 {
     m_ShortBreakDurationMinutes = value;
     if(!m_IsBreakRunning && !m_IsPomodoroRunning)
-        m_TimeLeft = value * 60;
+        m_TimeLeft = value * 60 * (1000 / m_IntervalMiliseconds);
 }
 
 int Pomodoro::GetPomodoroDurationMinutes() const
@@ -168,23 +175,18 @@ void Pomodoro::SetPomodoroDurationMinutes(int value)
 {
     m_PomodoroDurationMinutes = value;
     if(!m_IsBreakRunning && !m_IsPomodoroRunning)
-        m_TimeLeft = value * 60;
-}
-
-QString Pomodoro::GetName() const
-{
-    return m_Name;
-}
-
-void Pomodoro::SetName(const QString &value)
-{
-    m_Name = value;
+        m_TimeLeft = value * 60 * (1000 / m_IntervalMiliseconds);
 }
 
 int Pomodoro::GetTimeLeft()
 {
     return m_TimeLeft;
 }
+int Pomodoro::GetCurrentTaskTime()
+{
+    return m_CurrentTaskTime;
+}
+
 
 bool Pomodoro::IsActive()
 {

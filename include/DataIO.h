@@ -8,8 +8,8 @@ class DataIO
 public:
     explicit DataIO();
     ~DataIO();
-    static void SaveConfig(nlohmann::json configData, std::string pomodoroName);
-    static nlohmann::json LoadConfig(std::string pomodoroName);
+    static void SaveConfig(nlohmann::json configData);
+    static nlohmann::json LoadConfig();
 };
 
 #endif // DATAIO_H

@@ -1,24 +1,32 @@
 #include "TimerWindow.h"
 #include "ui_TimerWindow.h"
-
-#include "nlohmann/json.hpp"
-
-#include <QVBoxLayout>
-#include <QShortcut>
+#include <QWidget>
+#include <QPainter>
+#include <QResizeEvent>
 #include <QDir>
-#include <fstream>
+#include <QPainterPath>
 
-
-using json = nlohmann::json;
-
-TimerWindow::TimerWindow(QWidget *parent) :
+TimerWindow::TimerWindow(QWidget * parent) :
     QWidget(parent),
     ui(new Ui::TimerWindow)
 {
-    m_Pomodoro = new Pomodoro();
     ui->setupUi(this);
 
-    ui->timeLabel->setText(QString::number(m_Pomodoro->GetPomodoroDurationMinutes())+":00");
+    QPixmap playPixmap(":/images/play.png");
+    QPixmap stopPixamp(":/images/stop.png");
+
+    ui->pomodoroButton->setIcon(QIcon(playPixmap));
+    ui->resetButton->setIcon(QIcon(stopPixamp));
+
+    ui->pomodoroButton->setIconSize(playPixmap.rect().size()/2);
+    ui->resetButton->setIconSize(stopPixamp.rect().size()/2);
+
+    QFile styleFile( ":/stylesheets/TimerWindow.qss" );
+    styleFile.open( QFile::ReadOnly );
+    setStyleSheet( styleFile.readAll() );
+
+    m_Pomodoro = new Pomodoro(this);
+
 
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);
@@ -26,30 +34,25 @@ TimerWindow::TimerWindow(QWidget *parent) :
     foreach(QString filename, pomodoroDataFiles) {
         pomodoroNames.append(filename.replace(".json", ""));
     }
-    ui->pomodoroNameComboBox->addItems(pomodoroNames);
-    ui->pomodoroNameComboBox->setEditText("");
-    QAbstractItemModel* model = ui->pomodoroNameComboBox->model();
-    for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
-        QModelIndex index = model->index(i, 0);
-        model->setData(index, QSize(50, 50), Qt::SizeHintRole);
-    }
 
 
     connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
     connect(ui->resetButton, &QPushButton::clicked, this, &TimerWindow::Reset);
-    connect(ui->pomodoroNameComboBox, &QComboBox::currentTextChanged, this, &TimerWindow::PomodoroSelected);
-
-    connect(ui->pomodoroTime, SIGNAL(valueChanged(int)), this, SLOT(SetPomodoroTime(int)));
-    connect(ui->shortBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetShortBreakTime(int)));
-    connect(ui->longBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetLongBreakTime(int)));
 
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
 
-    ui->pomodoroButton->setEnabled(false);
+
+    connect(m_Pomodoro, &Pomodoro::sg_BreakFinished, this, &TimerWindow::BreakFinished);
+    connect(m_Pomodoro, &Pomodoro::sg_PomodoroFinished, this, &TimerWindow::PomodoroFinished);
+    connect(m_Pomodoro, &Pomodoro::sg_BreakStarted, this, &TimerWindow::BreakStarted);
+    connect(m_Pomodoro, &Pomodoro::sg_PomodoroStarted, this, &TimerWindow::PomodoroStarted);
+
     ui->resetButton->setEnabled(false);
 
-    ui->pomodoroButton->setEnabled(ui->pomodoroNameComboBox->currentText() != QString(""));
+    updateProgress(1.0);
+
+    SetCircularBarColor(new QColor("#fe4c4b"));
 
 }
 
@@ -58,17 +61,45 @@ TimerWindow::~TimerWindow()
     delete ui;
 }
 
-void TimerWindow::PomodoroSelected(const QString& pomodoroName)
+void TimerWindow::SetCircularBarColor(QColor* m_Color)
 {
-    m_Pomodoro->SetName(pomodoroName);
+    m_CircularBarColor = m_Color;
+}
 
-    ui->pomodoroButton->setEnabled(pomodoroName != QString(""));
+void TimerWindow::updateProgress(qreal newProgress) {
+    if (m_Progress == newProgress) return;
+    m_Progress = newProgress;
+    update();
+}
+
+void TimerWindow::paintEvent(QPaintEvent *) {
+    qreal pd = m_Progress * 360;
+    qreal rd = 360 - pd;
+    QPainter p(this);
+    p.fillRect(rect(), Qt::transparent);
+    p.translate(90, 50);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath path, path2;
+    path.moveTo((this->width()-(this->width()*0.45))/2, 0);
+    path.arcTo(QRectF(0, 0, this->width()-(this->width()*0.45), this->width()-(this->width()*0.45)), 90, -pd);
+    QPen pen, pen2;
+    pen.setCapStyle(Qt::FlatCap);
+    pen.setColor(*m_CircularBarColor);
+    pen.setWidth(12);
+    p.strokePath(path, pen);
+    path2.moveTo((this->width()-(this->width()*0.45))/2, 0);
+    pen2.setWidth(12);
+    pen2.setColor(QColor("#232938"));
+    pen2.setCapStyle(Qt::FlatCap);
+    pen2.setDashPattern(QVector<qreal>{2, 0});
+    path2.arcTo(QRectF(0, 0, this->width()-(this->width()*0.45), this->width()-(this->width()*0.45)), 90, rd);
+    pen2.setDashOffset(2.2);
+    p.strokePath(path2, pen2);
 }
 
 void TimerWindow::SetPomodoroTime(int time)
 {
     m_Pomodoro->SetPomodoroDurationMinutes(time);
-    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), true);
 }
 
 void TimerWindow::SetShortBreakTime(int time)
@@ -81,38 +112,55 @@ void TimerWindow::SetLongBreakTime(int time)
     m_Pomodoro->SetLongBreakDurationMinutes(time);
 }
 
-void TimerWindow::TimeOut()
+void TimerWindow::PomodoroFinished()
 {
-    ui->pomodoroTime->setEnabled(true);
-    ui->shortBreakTime->setEnabled(true);
-    ui->longBreakTime->setEnabled(true);
-    ui->pomodoroButton->setEnabled(true);
-    ui->resetButton->setEnabled(false);
-    emit sg_PomodoroFinished();
+    SetCircularBarColor(new QColor("#fe4c4b"));
 }
 
-void TimerWindow::UpdateTime(bool isPomodoroRunning)
+void TimerWindow::BreakFinished()
 {
-    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), isPomodoroRunning);
+    SetCircularBarColor(new QColor("#fe4c4b"));
+}
+void TimerWindow::PomodoroStarted()
+{
+    SetCircularBarColor(new QColor("#fe4c4b"));
+}
+
+void TimerWindow::BreakStarted()
+{
+    SetCircularBarColor(new QColor("#05eb8b"));
+}
+
+void TimerWindow::TimeOut()
+{
+    ui->pomodoroButton->setEnabled(true);
+    ui->resetButton->setEnabled(false);
+    emit sg_TimerFinished();
+}
+
+void TimerWindow::UpdateTime()
+{
+    updateProgress((qreal)m_Pomodoro->GetTimeLeft() / (qreal)m_Pomodoro->GetCurrentTaskTime());
+    ui->timerLabel->setText(QString::number(m_Pomodoro->GetTimeLeft() / (1000 / m_Pomodoro->m_IntervalMiliseconds)));
 }
 
 void TimerWindow::StartPomodoro()
 {
-    ui->pomodoroTime->setEnabled(false);
-    ui->shortBreakTime->setEnabled(false);
-    ui->longBreakTime->setEnabled(false);
     ui->pomodoroButton->setEnabled(false);
     ui->resetButton->setEnabled(true);
     m_Pomodoro->StartPomodoro();
+
 }
 
 void TimerWindow::Reset()
 {
-    ui->pomodoroTime->setEnabled(true);
-    ui->shortBreakTime->setEnabled(true);
-    ui->longBreakTime->setEnabled(true);
     ui->pomodoroButton->setEnabled(true);
     ui->resetButton->setEnabled(false);
     m_Pomodoro->Reset();
-    ui->timeLabel->SetTime(m_Pomodoro->GetTimeLeft(), true);
+    UpdateTime();
+}
+
+QPushButton* TimerWindow::GetStatsButton()
+{
+    return ui->statsButton;
 }

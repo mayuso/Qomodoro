@@ -6,7 +6,7 @@
 #include "Pomodoro.h"
 #include "TopBarTitle.h"
 
-#include "CircularTimer.h"
+#include "TimerWindow.h"
 #include "StatsWindow.h"
 #include "OptionsWindow.h"
 
@@ -30,8 +30,9 @@ public:
 public slots:
     void TimerFinished();
 
+    void OptionsButtonClicked();
+    void StatsButtonClicked();
     void MinimizeButtonClicked();
-    void MaximizeButtonClicked();
     void CloseButtonClicked();
 
 private:
@@ -39,7 +40,7 @@ private:
 
     StatsWindow *m_StatsWindow;
     OptionsWindow *m_OptionsWindow;
-    CircularTimer *m_CircularTimer;
+    TimerWindow *m_TimerWindow;
 
 };
 

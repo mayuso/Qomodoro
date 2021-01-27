@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QChartView>
-
+#include <QPushButton>
 
 QT_CHARTS_USE_NAMESPACE
 

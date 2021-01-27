@@ -16,8 +16,9 @@ StatsWindow::StatsWindow(QWidget *parent) :
 
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);
-    ui->contentsLayout->addWidget(new WeekChart(pomodoroDataFiles, this));
-    ui->contentsLayout->addWidget(new DayChart(pomodoroDataFiles, this));
+
+    //ui->statsLayout->insertWidget(0,new DayChart(pomodoroDataFiles, this));
+    ui->statsLayout->insertWidget(0,new WeekChart(pomodoroDataFiles, this));
 }
 
 StatsWindow::~StatsWindow()

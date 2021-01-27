@@ -19,23 +19,22 @@ using json = nlohmann::json;
 WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
-    setMinimumHeight(300);
-    setMaximumHeight(500);
-
-    QBarSeries *series = LoadData(pomodoroDataFiles);
+    QHorizontalBarSeries *series = LoadData(pomodoroDataFiles);
     QChart* chart = CreateChart(series);
     setChart(chart);
 
     setRenderHint(QPainter::Antialiasing);
+    setMaximumHeight(500);
+    setMaximumWidth(400);
 }
 
 WeekChart::~WeekChart()
 {
 }
 
-QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
+QHorizontalBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
 {
-    QBarSeries *series = new QBarSeries();
+    QHorizontalBarSeries *series = new QHorizontalBarSeries();
 
     foreach(QString filename, pomodoroDataFiles) {
 
@@ -70,7 +69,7 @@ QBarSeries* WeekChart::LoadData(QStringList pomodoroDataFiles)
     return series;
 }
 
-QChart* WeekChart::CreateChart(QBarSeries *series)
+QChart* WeekChart::CreateChart(QHorizontalBarSeries *series)
 {
     QChart *chart = new QChart();
     chart->addSeries(series);
@@ -78,14 +77,14 @@ QChart* WeekChart::CreateChart(QBarSeries *series)
     chart->setBackgroundVisible(false);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
-    QStringList categories;
-    categories << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
-    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(categories);
+    QValueAxis *axisX = new QValueAxis();
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
-    QValueAxis *axisY = new QValueAxis();
+    QStringList categories;
+    categories << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
+    QBarCategoryAxis *axisY = new QBarCategoryAxis();
+    axisY->append(categories);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 

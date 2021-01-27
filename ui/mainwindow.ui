@@ -6,15 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>675</height>
+    <width>400</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
-    <height>675</height>
+    <width>400</width>
+    <height>550</height>
    </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>550</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Pomodoro</string>
@@ -25,6 +37,9 @@
      <width>0</width>
      <height>0</height>
     </size>
+   </property>
+   <property name="accessibleName">
+    <string notr="true">mainWidget</string>
    </property>
    <layout class="QVBoxLayout" name="mainLayout">
     <property name="spacing">
@@ -45,16 +60,25 @@
     <item>
      <widget class="QWidget" name="TopBar" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="minimumSize">
        <size>
-        <width>600</width>
-        <height>35</height>
+        <width>0</width>
+        <height>45</height>
        </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>45</height>
+       </size>
+      </property>
+      <property name="accessibleName">
+       <string notr="true"/>
       </property>
       <layout class="QHBoxLayout" name="topBarLayout">
        <property name="spacing">
@@ -73,37 +97,31 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="minButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QPushButton" name="optionsButton">
          <property name="minimumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>16</pointsize>
+           <pointsize>22</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
-          <string>minButton</string>
+          <string notr="true">menuButton</string>
          </property>
          <property name="text">
-          <string>-</string>
+          <string>O</string>
          </property>
          <property name="iconSize">
           <size>
@@ -114,7 +132,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="maxButton">
+        <widget class="QPushButton" name="minButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -123,28 +141,28 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>16</pointsize>
+           <pointsize>22</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
-          <string>maxButton</string>
+          <string notr="true">minButton</string>
          </property>
          <property name="text">
-          <string>+</string>
+          <string>-</string>
          </property>
          <property name="iconSize">
           <size>
@@ -164,14 +182,14 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>35</height>
+           <width>45</width>
+           <height>45</height>
           </size>
          </property>
          <property name="font">
@@ -182,7 +200,7 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>closeButton</string>
+          <string notr="true">closeButton</string>
          </property>
          <property name="text">
           <string>X</string>
@@ -199,19 +217,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="tabShape">
-       <enum>QTabWidget::Rounded</enum>
-      </property>
+     <widget class="SlidingStackedWidget" name="slidingStackedWidget">
       <property name="currentIndex">
        <number>-1</number>
       </property>
@@ -221,6 +227,14 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>SlidingStackedWidget</class>
+   <extends>QStackedWidget</extends>
+   <header>include/SlidingStackedWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

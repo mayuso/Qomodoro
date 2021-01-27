@@ -1,21 +1,35 @@
+/* ------------------------------- MAIN WIDGET ------------------------------- */
+
+QWidget[accessibleName="TimerWindow"]{
+    background-color: #2f384b;
+}
+
 /* ------------------------------- PLAY AND RESET BUTTONS ------------------------------- */
 
 QPushButton {
-    background-color: transparent;
+    background-color: #2f384b;
     outline: none;
+    border: 0px;
 }
+
+/* ------------------------------- LABELS ------------------------------- */
+
+QLabel{
+    color: #9ba4b4;
+}
+
 
 /* ------------------------------- POMODORO NAME SELECTOR ------------------------------- */
 
 QComboBox {
-
-  border: 0px solid #A0A0A0;
+  color: #9ba4b4;
+  border: 1px solid #A0A0A0;
   selection-background-color: #A0A0A0;
   selection-color: #FFFFFF;
 }
 
 QComboBox:enabled {
-  background: #FAFAFA;
+  background: #2f384b;
 }
 QComboBox:disabled {
   background: transparent;
@@ -42,6 +56,6 @@ QComboBox::down-arrow::disabled {
 }
 
 QComboBox QAbstractItemView {
-  background: #F0F0F0;
+  background: #2f384b;
   border: none;
 }

@@ -19,9 +19,8 @@ using json = nlohmann::json;
 DayChart::DayChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
-    setMinimumHeight(300);
-    setMaximumHeight(500);
-
+    setMaximumHeight(300);
+    setMaximumWidth(parent->width());
     QBarSeries *series = LoadData(pomodoroDataFiles);
     QChart* chart = CreateChart(series);
     setChart(chart);

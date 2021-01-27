@@ -1,30 +1,33 @@
-#ifndef CIRCULARTIMER_H
-#define CIRCULARTIMER_H
+#ifndef TimerWindow_H
+#define TimerWindow_H
 
-#include <QMainWindow>
-#include <QSystemTrayIcon>
 #include "Pomodoro.h"
 #include "TopBarTitle.h"
 
+#include <QMainWindow>
+#include <QPushButton>
+#include <QSystemTrayIcon>
+
+
 namespace Ui {
-class CircularTimer;
+class TimerWindow;
 }
 
-class CircularTimer : public QWidget
+class TimerWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CircularTimer(QWidget *parent = nullptr);
-    ~CircularTimer();
+    explicit TimerWindow(QWidget *parent = nullptr);
+    ~TimerWindow();
 
-    qreal p; // progress 0.0 to 1.0
+    qreal m_Progress; // progress 0.0 to 1.0
 
     void paintEvent(QPaintEvent *) override;
-    void resizeEvent(QResizeEvent *event) override;
-    void upd(qreal pp);
+    void updateProgress(qreal newProgress);
 
     void SetCircularBarColor(QColor*);
+
 
 
 public slots:
@@ -33,7 +36,6 @@ public slots:
     void Reset();
     void TimeOut();
     void UpdateTime();
-    void PomodoroSelected(const QString & pomodoroName);
 
     void SetPomodoroTime(int time);
     void SetShortBreakTime(int time);
@@ -44,12 +46,13 @@ public slots:
     void PomodoroStarted();
     void BreakStarted();
 
+    QPushButton* GetStatsButton();
 
 signals:
     void sg_TimerFinished();
 
 private:
-    Ui::CircularTimer *ui;
+    Ui::TimerWindow *ui;
     TopBarTitle *m_TitleBar;
 
     Pomodoro* m_Pomodoro;
@@ -57,4 +60,4 @@ private:
 
 };
 
-#endif // CIRCULARTIMER_H
+#endif // TimerWindow_H

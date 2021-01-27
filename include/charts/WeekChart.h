@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QChartView>
-#include <QBarSeries>
+#include <QHorizontalBarSeries>
 
 
 QT_CHARTS_USE_NAMESPACE
@@ -18,8 +18,8 @@ public:
     ~WeekChart();
 
 private:
-    QBarSeries* LoadData(QStringList pomodoroDataFiles);
-    QChart* CreateChart(QBarSeries *series);
+    QHorizontalBarSeries* LoadData(QStringList pomodoroDataFiles);
+    QChart* CreateChart(QHorizontalBarSeries *series);
 };
 
 #endif // WEEKCHART_H

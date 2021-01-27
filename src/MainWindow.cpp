@@ -7,6 +7,7 @@
 #include <QTabBar>
 #include <QSizeGrip>
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,35 +21,32 @@ MainWindow::MainWindow(QWidget *parent) :
     setStyleSheet( styleFile.readAll() );
 
     m_TitleBar = new TopBarTitle(this);
-    ui->topBarLayout->insertWidget(0, m_TitleBar);
+    ui->topBarLayout->insertWidget(1, m_TitleBar);
 
     connect(ui->minButton, &QPushButton::clicked, this, &MainWindow::MinimizeButtonClicked);
-    connect(ui->maxButton, &QPushButton::clicked, this, &MainWindow::MaximizeButtonClicked);
     connect(ui->closeButton, &QPushButton::clicked, this, &MainWindow::CloseButtonClicked);
 
-    QSizeGrip *sizegrip = new QSizeGrip(this);
-    ui->mainLayout->addWidget(sizegrip, 0, Qt::AlignRight | Qt::AlignBottom);
 
-    while(ui->tabWidget->count() > 0)
-        ui->tabWidget->removeTab(0);
+    m_TimerWindow = new TimerWindow();
+    connect(m_TimerWindow, &TimerWindow::sg_TimerFinished, this, &MainWindow::TimerFinished);
 
-    m_CircularTimer = new CircularTimer;
-    connect(m_CircularTimer, &CircularTimer::sg_TimerFinished, this, &MainWindow::TimerFinished);
-
-
-    m_StatsWindow = new StatsWindow();
     m_OptionsWindow = new OptionsWindow();
+    m_StatsWindow = new StatsWindow();
 
-    //connect(m_CircularTimer, SIGNAL(sg_EnableOptionControls(bool)), m_OptionsWindow, SLOT(SetControlsEnabled(bool)));
-    connect(m_OptionsWindow, SIGNAL(sg_PomodoroTimeChanged(int)), m_CircularTimer, SLOT(SetPomodoroTime(int)));
-    connect(m_OptionsWindow, SIGNAL(sg_ShortBreakTimeChanged(int)), m_CircularTimer, SLOT(SetShortBreakTime(int)));
-    connect(m_OptionsWindow, SIGNAL(sg_LongBreakTimeChanged(int)), m_CircularTimer, SLOT(SetLongBreakTime(int)));
+    connect(m_OptionsWindow, SIGNAL(sg_PomodoroTimeChanged(int)), m_TimerWindow, SLOT(SetPomodoroTime(int)));
+    connect(m_OptionsWindow, SIGNAL(sg_ShortBreakTimeChanged(int)), m_TimerWindow, SLOT(SetShortBreakTime(int)));
+    connect(m_OptionsWindow, SIGNAL(sg_LongBreakTimeChanged(int)), m_TimerWindow, SLOT(SetLongBreakTime(int)));
 
 
-    ui->tabWidget->addTab(m_CircularTimer, "Timer");
-    ui->tabWidget->addTab(m_StatsWindow, "Stats");
-    ui->tabWidget->addTab(m_OptionsWindow, "Options");
-    ui->tabWidget->setCurrentIndex(0);
+    ui->slidingStackedWidget->addWidget(m_OptionsWindow);
+    ui->slidingStackedWidget->addWidget(m_TimerWindow);
+    ui->slidingStackedWidget->addWidget(m_StatsWindow);
+    ui->slidingStackedWidget->setCurrentIndex(1);
+
+    ui->slidingStackedWidget->setSpeed(750);
+
+    connect(ui->optionsButton, &QPushButton::clicked, this, &MainWindow::OptionsButtonClicked);
+    connect(m_TimerWindow->GetStatsButton(), &QPushButton::clicked, this, &MainWindow::StatsButtonClicked);
 }
 
 MainWindow::~MainWindow()
@@ -63,16 +61,33 @@ void MainWindow::TimerFinished()
     raise();
 }
 
+void MainWindow::OptionsButtonClicked()
+{
+    if(ui->slidingStackedWidget->currentIndex() != 0)
+    {
+        ui->slidingStackedWidget->slideInIdx(0);
+    }
+    else
+    {
+        ui->slidingStackedWidget->slideInIdx(1);
+    }
+}
+
+void MainWindow::StatsButtonClicked()
+{
+    if(ui->slidingStackedWidget->currentIndex() != 2)
+    {
+        ui->slidingStackedWidget->slideInIdx(2);
+    }
+    else
+    {
+        ui->slidingStackedWidget->slideInIdx(1);
+    }
+}
+
 void MainWindow::MinimizeButtonClicked()
 {
     showMinimized();
-}
-void MainWindow::MaximizeButtonClicked()
-{
-    if(isMaximized())
-        showNormal();
-    else
-        showMaximized();
 }
 void MainWindow::CloseButtonClicked()
 {
