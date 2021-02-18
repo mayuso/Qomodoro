@@ -46,8 +46,6 @@ public slots:
     void PomodoroStarted();
     void BreakStarted();
 
-    QPushButton* GetStatsButton();
-
 signals:
     void sg_TimerFinished();
 

@@ -1,20 +1,8 @@
 /* ------------------------------- TOP BAR ------------------------------- */
 
-QPushButton[accessibleName="menuButton"] { 
-    border: 0; 
-    color: #9ba4b4;
-	text-align: center;
-	line-height: 35px;
-    background-color: #2f384b;  
-}
-
-QPushButton:hover[accessibleName="menuButton"] { 
-    color: #05eb8b;  
-}
-
 QLabel[accessibleName="titleLabel"] {
     background-color: #2f384b;
-    color: white;
+    color: #9ba4b4;
     font-size: 18px;
 }
 
@@ -49,4 +37,18 @@ QWidget[accessibleName="mainWidget"] {
     background-color: #2f384b;
     position: absolute;
     top: -0.5em;
+}
+
+/* ------------------------------- BOTTOM WIDGET ------------------------------- */
+
+QPushButton[accessibleName="BottomButton"] {
+    border: 0;
+    color: #9ba4b4;
+    text-align: center;
+    line-height: 35px;
+    background-color: #2f384b;
+}
+
+QPushButton:hover[accessibleName="BottomButton"] {
+    color: #05eb8b;
 }

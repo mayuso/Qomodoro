@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setStyleSheet( styleFile.readAll() );
 
     m_TitleBar = new TopBarTitle(this);
-    ui->topBarLayout->insertWidget(1, m_TitleBar);
+    ui->topBarLayout->insertWidget(0, m_TitleBar);
 
     connect(ui->minButton, &QPushButton::clicked, this, &MainWindow::MinimizeButtonClicked);
     connect(ui->closeButton, &QPushButton::clicked, this, &MainWindow::CloseButtonClicked);
@@ -45,8 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->slidingStackedWidget->setSpeed(750);
 
-    connect(ui->optionsButton, &QPushButton::clicked, this, &MainWindow::OptionsButtonClicked);
-    connect(m_TimerWindow->GetStatsButton(), &QPushButton::clicked, this, &MainWindow::StatsButtonClicked);
+    connect(ui->optionsButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
+    connect(ui->timerButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
+    connect(ui->statsButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
 }
 
 MainWindow::~MainWindow()
@@ -61,27 +62,20 @@ void MainWindow::TimerFinished()
     raise();
 }
 
-void MainWindow::OptionsButtonClicked()
+void MainWindow::BottomBarButtonClicked()
 {
-    if(ui->slidingStackedWidget->currentIndex() != 0)
+    QPushButton* clickedButton = qobject_cast<QPushButton *>(sender());
+    if(clickedButton->objectName() == "optionsButton")
     {
         ui->slidingStackedWidget->slideInIdx(0);
     }
-    else
+    else if(clickedButton->objectName() == "timerButton")
     {
         ui->slidingStackedWidget->slideInIdx(1);
     }
-}
-
-void MainWindow::StatsButtonClicked()
-{
-    if(ui->slidingStackedWidget->currentIndex() != 2)
+    else if(clickedButton->objectName() == "statsButton")
     {
         ui->slidingStackedWidget->slideInIdx(2);
-    }
-    else
-    {
-        ui->slidingStackedWidget->slideInIdx(1);
     }
 }
 

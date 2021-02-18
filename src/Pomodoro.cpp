@@ -21,7 +21,7 @@ Pomodoro::Pomodoro(QObject *parent) :
     m_PomodoroCounter = 0;
     m_IsPomodoroRunning = false;
 
-    m_PomodoroDurationMinutes = 2;
+    m_PomodoroDurationMinutes = 25;
     m_ShortBreakDurationMinutes = 5;
     m_LongBreakDurationMinutes = 20;
     m_CurrentTaskTime = m_PomodoroDurationMinutes;

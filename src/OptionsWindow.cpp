@@ -1,12 +1,17 @@
 #include "OptionsWindow.h"
 #include "ui_OptionsWindow.h"
 
+#include <QDir>
+
 OptionsWindow::OptionsWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OptionsWindow)
 {
     ui->setupUi(this);
 
+    QFile styleFile( ":/stylesheets/OptionsWindow.qss" );
+    styleFile.open( QFile::ReadOnly );
+    setStyleSheet( styleFile.readAll() );
 
     connect(ui->pomodoroTime, SIGNAL(valueChanged(int)), this, SLOT(SetPomodoroTime(int)));
     connect(ui->shortBreakTime, SIGNAL(valueChanged(int)), this, SLOT(SetShortBreakTime(int)));

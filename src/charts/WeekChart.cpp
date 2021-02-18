@@ -19,13 +19,16 @@ using json = nlohmann::json;
 WeekChart::WeekChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
-    QHorizontalBarSeries *series = LoadData(pomodoroDataFiles);
-    QChart* chart = CreateChart(series);
-    setChart(chart);
-
+    setAccessibleName("Chart");
     setRenderHint(QPainter::Antialiasing);
     setMaximumHeight(500);
     setMaximumWidth(400);
+    setBackgroundBrush(QBrush(QColor("transparent")));
+    setContentsMargins(0,0,0,0);
+
+    QHorizontalBarSeries *series = LoadData(pomodoroDataFiles);
+    QChart* chart = CreateChart(series);
+    setChart(chart);
 }
 
 WeekChart::~WeekChart()
@@ -74,7 +77,9 @@ QChart* WeekChart::CreateChart(QHorizontalBarSeries *series)
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Pomodoros by day");
-    chart->setBackgroundVisible(false);
+    chart->setBackgroundBrush(QBrush(QColor("transparent")));
+    chart->legend()->hide();
+    chart->setContentsMargins(0,0,0,0);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QValueAxis *axisX = new QValueAxis();
@@ -88,8 +93,10 @@ QChart* WeekChart::CreateChart(QHorizontalBarSeries *series)
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
-    chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    QBrush textBrush(QColor(155, 164, 180)); //#9ba4b4
+    chart->setTitleBrush(textBrush);
+    axisX->setLabelsBrush(textBrush);
+    axisY->setLabelsBrush(textBrush);
 
     chart->setMinimumHeight(minimumHeight());
     chart->setMaximumHeight(maximumHeight());

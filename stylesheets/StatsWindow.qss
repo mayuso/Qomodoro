@@ -1,0 +1,5 @@
+/* ------------------------------- CHARTS ------------------------------- */
+
+QWidget[accessibleName="Chart"]{
+    background: transparent;
+}

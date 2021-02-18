@@ -19,13 +19,16 @@ using json = nlohmann::json;
 DayChart::DayChart(QStringList pomodoroDataFiles, QWidget *parent) :
     QChartView(parent)
 {
+    setAccessibleName("Chart");
     setMaximumHeight(300);
     setMaximumWidth(parent->width());
+    setRenderHint(QPainter::Antialiasing);
+    setBackgroundBrush(QBrush(QColor("transparent")));
+    setContentsMargins(0,0,0,0);
+
     QBarSeries *series = LoadData(pomodoroDataFiles);
     QChart* chart = CreateChart(series);
     setChart(chart);
-
-    setRenderHint(QPainter::Antialiasing);
 }
 
 DayChart::~DayChart()
@@ -70,7 +73,9 @@ QChart* DayChart::CreateChart(QBarSeries *series)
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Pomodoros by hour");
-    chart->setBackgroundVisible(false);
+    chart->setBackgroundBrush(QBrush(QColor("transparent")));
+    chart->legend()->hide();
+    chart->setContentsMargins(0,0,0,0);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QStringList categories;
@@ -87,8 +92,10 @@ QChart* DayChart::CreateChart(QBarSeries *series)
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
-    chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    QBrush textBrush(QColor(155, 164, 180)); //#9ba4b4
+    chart->setTitleBrush(textBrush);
+    axisX->setLabelsBrush(textBrush);
+    axisY->setLabelsBrush(textBrush);
 
     chart->setMinimumHeight(minimumHeight());
     chart->setMaximumHeight(maximumHeight());

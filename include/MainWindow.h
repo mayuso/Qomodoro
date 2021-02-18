@@ -26,14 +26,12 @@ public:
 
     Ui::MainWindow *ui;
 
-
 public slots:
     void TimerFinished();
 
-    void OptionsButtonClicked();
-    void StatsButtonClicked();
     void MinimizeButtonClicked();
     void CloseButtonClicked();
+    void BottomBarButtonClicked();
 
 private:
     TopBarTitle *m_TitleBar;
@@ -41,6 +39,7 @@ private:
     StatsWindow *m_StatsWindow;
     OptionsWindow *m_OptionsWindow;
     TimerWindow *m_TimerWindow;
+
 
 };
 

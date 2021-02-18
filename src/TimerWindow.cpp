@@ -35,14 +35,11 @@ TimerWindow::TimerWindow(QWidget * parent) :
         pomodoroNames.append(filename.replace(".json", ""));
     }
 
-
     connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
     connect(ui->resetButton, &QPushButton::clicked, this, &TimerWindow::Reset);
 
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
-
-
     connect(m_Pomodoro, &Pomodoro::sg_BreakFinished, this, &TimerWindow::BreakFinished);
     connect(m_Pomodoro, &Pomodoro::sg_PomodoroFinished, this, &TimerWindow::PomodoroFinished);
     connect(m_Pomodoro, &Pomodoro::sg_BreakStarted, this, &TimerWindow::BreakStarted);
@@ -158,9 +155,4 @@ void TimerWindow::Reset()
     ui->resetButton->setEnabled(false);
     m_Pomodoro->Reset();
     UpdateTime();
-}
-
-QPushButton* TimerWindow::GetStatsButton()
-{
-    return ui->statsButton;
 }
