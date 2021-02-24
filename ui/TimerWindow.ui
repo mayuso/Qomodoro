@@ -80,7 +80,7 @@
       <string notr="true">timerLabel</string>
      </property>
      <property name="text">
-      <string/>
+      <string>25:00</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

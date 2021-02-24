@@ -50,7 +50,6 @@ TimerWindow::TimerWindow(QWidget * parent) :
     updateProgress(1.0);
 
     SetCircularBarColor(new QColor("#fe4c4b"));
-
 }
 
 TimerWindow::~TimerWindow()
@@ -97,6 +96,7 @@ void TimerWindow::paintEvent(QPaintEvent *) {
 void TimerWindow::SetPomodoroTime(int time)
 {
     m_Pomodoro->SetPomodoroDurationMinutes(time);
+    UpdateTimeLabel();
 }
 
 void TimerWindow::SetShortBreakTime(int time)
@@ -138,9 +138,22 @@ void TimerWindow::TimeOut()
 void TimerWindow::UpdateTime()
 {
     updateProgress((qreal)m_Pomodoro->GetTimeLeft() / (qreal)m_Pomodoro->GetCurrentTaskTime());
-    ui->timerLabel->setText(QString::number(m_Pomodoro->GetTimeLeft() / (1000 / m_Pomodoro->m_IntervalMiliseconds)));
+
+    UpdateTimeLabel();
 }
 
+void TimerWindow::UpdateTimeLabel()
+{
+    int minutes = m_Pomodoro->GetTimeLeft() / (1000 * 60 / m_Pomodoro->m_IntervalMiliseconds);
+    int seconds = m_Pomodoro->GetTimeLeft() / (1000 / m_Pomodoro->m_IntervalMiliseconds) - (minutes * 60);
+
+    QString minutesString = QString::number(minutes);
+    QString secondsString = QString::number(seconds);
+    if(seconds < 10)
+         secondsString = "0" + QString::number(seconds);
+
+    ui->timerLabel->setText(minutesString + ":" + secondsString);
+}
 void TimerWindow::StartPomodoro()
 {
     ui->pomodoroButton->setEnabled(false);

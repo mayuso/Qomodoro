@@ -1,9 +1,15 @@
-/* ------------------------------- PLAY AND RESET BUTTONS ------------------------------- */
+/* ------------------------------- BUTTONS ------------------------------- */
 
 QPushButton {
+    border: 0;
+    color: #9ba4b4;
+    text-align: center;
+    line-height: 35px;
     background-color: #2f384b;
-    outline: none;
-    border: 0px;
+}
+
+QPushButton:hover {
+    color: #05eb8b;
 }
 
 /* ------------------------------- LABELS ------------------------------- */
@@ -12,44 +18,25 @@ QLabel{
     color: #9ba4b4;
 }
 
+/* ------------------------------- SLIDERS ------------------------------- */
 
-/* ------------------------------- POMODORO NAME SELECTOR ------------------------------- */
-
-QComboBox {
-  color: #9ba4b4;
-  border: 1px solid #A0A0A0;
-  selection-background-color: #A0A0A0;
-  selection-color: #FFFFFF;
+QSlider::groove:horizontal {
+    border: 1px solid #bbb;
+    background: white;
+    height: 10px;
+    border-radius: 4px;
 }
-
-QComboBox:enabled {
-  background: #2f384b;
+QSlider::sub-page:horizontal {
+    background: #05eb8b;
+    border: 1px solid #777;
+    height: 10px;
+    border-radius: 4px;
 }
-QComboBox:disabled {
-  background: transparent;
-}
-
-
-QComboBox:!editable,
-QComboBox::drop-down:editable,
-QComboBox:!editable:on,
-QComboBox::drop-down:editable:on {
-  background: transparent;
-}
-
-QComboBox::drop-down {
-  width: 40px;
-  height: 40px;
-}
-
-QComboBox::down-arrow {
-  image: url(:/images/dropdown_arrow.png);
-}
-QComboBox::down-arrow::disabled {
-  image: url(:/images/dropdown_arrow_disabled.png);
-}
-
-QComboBox QAbstractItemView {
-  background: #2f384b;
-  border: none;
+QSlider::handle:horizontal {
+    background: #05eb8b;
+    border: 1px solid #777;
+    width: 13px;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    border-radius: 4px;
 }

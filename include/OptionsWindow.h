@@ -21,6 +21,7 @@ public slots:
     void SetPomodoroTime(int time);
     void SetShortBreakTime(int time);
     void SetLongBreakTime(int time);
+    void ResetValues();
 
 signals:
     void sg_PomodoroTimeChanged(int);

@@ -29,7 +29,7 @@ void TopBarTitle::mouseMoveEvent(QMouseEvent *event)
     {
         m_End = mapToGlobal(event->pos());
         QPoint movement = m_End-m_Start;
-        parentWidget()->parentWidget()->parentWidget()->setGeometry(mapToGlobal(movement).x()-45, // 45 to compensate for the menuButton width
+        parentWidget()->parentWidget()->parentWidget()->setGeometry(mapToGlobal(movement).x(),
                             mapToGlobal(movement).y(),
                             ((MainWindow*)parentWidget()->parentWidget()->parentWidget())->width(),
                             ((MainWindow*)parentWidget()->parentWidget()->parentWidget())->height());
@@ -37,8 +37,6 @@ void TopBarTitle::mouseMoveEvent(QMouseEvent *event)
     }
 
 }
-
-
 
 
 void  TopBarTitle::mouseReleaseEvent(QMouseEvent *event)

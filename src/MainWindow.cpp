@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->slidingStackedWidget->addWidget(m_StatsWindow);
     ui->slidingStackedWidget->setCurrentIndex(1);
 
-    ui->slidingStackedWidget->setSpeed(750);
+    ui->slidingStackedWidget->setSpeed(650);
 
     connect(ui->optionsButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
     connect(ui->timerButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);

@@ -21,14 +21,11 @@ public:
     explicit TimerWindow(QWidget *parent = nullptr);
     ~TimerWindow();
 
-    qreal m_Progress; // progress 0.0 to 1.0
-
     void paintEvent(QPaintEvent *) override;
     void updateProgress(qreal newProgress);
-
     void SetCircularBarColor(QColor*);
 
-
+    qreal m_Progress; // progress 0.0 to 1.0
 
 public slots:
     void StartPomodoro();
@@ -50,6 +47,8 @@ signals:
     void sg_TimerFinished();
 
 private:
+    void UpdateTimeLabel();
+
     Ui::TimerWindow *ui;
     TopBarTitle *m_TitleBar;
 
