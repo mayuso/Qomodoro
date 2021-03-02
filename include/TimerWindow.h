@@ -28,6 +28,7 @@ public:
     qreal m_Progress; // progress 0.0 to 1.0
 
 public slots:
+    void PomodoroButtonClicked();
     void StartPomodoro();
 
     void Reset();
@@ -48,12 +49,17 @@ signals:
 
 private:
     void UpdateTimeLabel();
+    void UpdateInfoLabel();
 
     Ui::TimerWindow *ui;
     TopBarTitle *m_TitleBar;
 
     Pomodoro* m_Pomodoro;
     QColor *m_CircularBarColor;
+
+    QPixmap* playPixmap,*stopPixmap;
+
+
 
 };
 

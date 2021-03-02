@@ -18,13 +18,14 @@ Pomodoro::Pomodoro(QObject *parent) :
     m_Timer->setTimerType(Qt::PreciseTimer);
     connect(m_Timer, SIGNAL(timeout()), this, SLOT(TimerTicked()));
 
-    m_PomodoroCounter = 0;
+    m_PomodoroCounter = 1;
     m_IsPomodoroRunning = false;
 
     m_PomodoroDurationMinutes = 25;
     m_ShortBreakDurationMinutes = 5;
     m_LongBreakDurationMinutes = 20;
     m_CurrentTaskTime = m_PomodoroDurationMinutes;
+    m_TimeLeft = m_PomodoroDurationMinutes * 60 * (1000 / m_IntervalMiliseconds);
 }
 
 Pomodoro::~Pomodoro()
@@ -130,7 +131,7 @@ void Pomodoro::StartBreak()
     m_IsPomodoroRunning = false;
     m_IsBreakRunning = true;
     m_PomodoroCounter += 1;
-    if(m_PomodoroCounter < 4)
+    if(m_PomodoroCounter < 5)
     {
         StartShortBreak();
     }
@@ -185,10 +186,4 @@ int Pomodoro::GetTimeLeft()
 int Pomodoro::GetCurrentTaskTime()
 {
     return m_CurrentTaskTime;
-}
-
-
-bool Pomodoro::IsActive()
-{
-    return m_Timer->isActive();
 }

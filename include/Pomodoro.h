@@ -17,14 +17,10 @@ public:
 
     int GetTimeLeft();
     int GetCurrentTaskTime();
-    bool IsActive();
 
     void StartPomodoro();
 
     void Reset();
-
-    QString GetName() const;
-    void SetName(const QString &value);
 
     int GetPomodoroDurationMinutes() const;
     void SetPomodoroDurationMinutes(int value);
@@ -36,6 +32,8 @@ public:
     void SetLongBreakDurationMinutes(int value);
 
     int m_IntervalMiliseconds;
+    bool m_IsPomodoroRunning, m_IsBreakRunning;
+    int m_PomodoroCounter;
 
 signals:
     void sg_Tick();
@@ -54,14 +52,11 @@ private:
     void StartShortBreak();
     void StartLongBreak();
 
-private:
     int m_TimeLeft, m_CurrentTaskTime;
     QTimer* m_Timer;
-
     int m_PomodoroDurationMinutes, m_ShortBreakDurationMinutes, m_LongBreakDurationMinutes;
 
-    int m_PomodoroCounter;
-    bool m_IsPomodoroRunning, m_IsBreakRunning;
+
 };
 
 #endif // POMODORO_H

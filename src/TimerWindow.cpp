@@ -12,21 +12,20 @@ TimerWindow::TimerWindow(QWidget * parent) :
 {
     ui->setupUi(this);
 
-    QPixmap playPixmap(":/images/play.png");
-    QPixmap stopPixamp(":/images/stop.png");
+    m_Pomodoro = new Pomodoro(this);
 
-    ui->pomodoroButton->setIcon(QIcon(playPixmap));
-    ui->resetButton->setIcon(QIcon(stopPixamp));
+    playPixmap = new QPixmap(":/images/play.png");
+    stopPixmap = new QPixmap(":/images/stop.png");
 
-    ui->pomodoroButton->setIconSize(playPixmap.rect().size()/2);
-    ui->resetButton->setIconSize(stopPixamp.rect().size()/2);
+    ui->pomodoroButton->setIconSize((*playPixmap).rect().size()/2);
+
+    ui->pomodoroButton->setIcon(QIcon(*playPixmap));
+    UpdateInfoLabel();
+    UpdateTimeLabel();
 
     QFile styleFile( ":/stylesheets/TimerWindow.qss" );
     styleFile.open( QFile::ReadOnly );
     setStyleSheet( styleFile.readAll() );
-
-    m_Pomodoro = new Pomodoro(this);
-
 
     QDir directory("data");
     QStringList pomodoroDataFiles = directory.entryList(QStringList() << "*.json" << "*.JSON",QDir::Files);
@@ -35,8 +34,7 @@ TimerWindow::TimerWindow(QWidget * parent) :
         pomodoroNames.append(filename.replace(".json", ""));
     }
 
-    connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::StartPomodoro);
-    connect(ui->resetButton, &QPushButton::clicked, this, &TimerWindow::Reset);
+    connect(ui->pomodoroButton, &QPushButton::clicked, this, &TimerWindow::PomodoroButtonClicked);
 
     connect(m_Pomodoro, &Pomodoro::sg_Tick, this, &TimerWindow::UpdateTime);
     connect(m_Pomodoro, &Pomodoro::sg_Timeout, this, &TimerWindow::TimeOut);
@@ -44,8 +42,6 @@ TimerWindow::TimerWindow(QWidget * parent) :
     connect(m_Pomodoro, &Pomodoro::sg_PomodoroFinished, this, &TimerWindow::PomodoroFinished);
     connect(m_Pomodoro, &Pomodoro::sg_BreakStarted, this, &TimerWindow::BreakStarted);
     connect(m_Pomodoro, &Pomodoro::sg_PomodoroStarted, this, &TimerWindow::PomodoroStarted);
-
-    ui->resetButton->setEnabled(false);
 
     updateProgress(1.0);
 
@@ -121,17 +117,18 @@ void TimerWindow::BreakFinished()
 void TimerWindow::PomodoroStarted()
 {
     SetCircularBarColor(new QColor("#fe4c4b"));
+    UpdateInfoLabel();
 }
 
 void TimerWindow::BreakStarted()
 {
     SetCircularBarColor(new QColor("#05eb8b"));
+    UpdateInfoLabel();
 }
 
 void TimerWindow::TimeOut()
 {
-    ui->pomodoroButton->setEnabled(true);
-    ui->resetButton->setEnabled(false);
+    ui->pomodoroButton->setIcon(QIcon(*playPixmap));
     emit sg_TimerFinished();
 }
 
@@ -154,18 +151,46 @@ void TimerWindow::UpdateTimeLabel()
 
     ui->timerLabel->setText(minutesString + ":" + secondsString);
 }
+
+void TimerWindow::PomodoroButtonClicked()
+{
+    if(m_Pomodoro->m_IsPomodoroRunning)
+    {
+        ui->pomodoroButton->setIcon(QIcon(*playPixmap));
+        Reset();
+    }
+    else
+    {
+        ui->pomodoroButton->setIcon(QIcon(*stopPixmap));
+        StartPomodoro();
+    }
+}
+
 void TimerWindow::StartPomodoro()
 {
-    ui->pomodoroButton->setEnabled(false);
-    ui->resetButton->setEnabled(true);
     m_Pomodoro->StartPomodoro();
-
 }
 
 void TimerWindow::Reset()
 {
-    ui->pomodoroButton->setEnabled(true);
-    ui->resetButton->setEnabled(false);
     m_Pomodoro->Reset();
     UpdateTime();
+}
+
+void TimerWindow::UpdateInfoLabel()
+{
+    if(m_Pomodoro->m_IsBreakRunning)
+    {
+        if(m_Pomodoro->m_PomodoroCounter == 0)
+            ui->infoLabel->setText("Session Finished! Long Break");
+        else
+            ui->infoLabel->setText("Break");
+
+    }
+    else
+    {
+        ui->infoLabel->setText("Pomodoro: " + QString::number(m_Pomodoro->m_PomodoroCounter) + "/4");
+    }
+
+
 }
