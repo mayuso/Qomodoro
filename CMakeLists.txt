@@ -52,7 +52,7 @@ set(SOURCE_FILES
 set(RESOURCE_FILES resources.qrc)
 set(RC_ICONS images/icon.ico)
 
-add_executable(${PROJECT_NAME} #${OS_BUNDLE} # Expands to WIN32 or MACOS_BUNDLE depending on OS
+add_executable(${PROJECT_NAME} ${OS_BUNDLE} # Expands to WIN32 or MACOS_BUNDLE depending on OS
     ${SOURCE_FILES} ${RESOURCE_FILES}
 )
 
