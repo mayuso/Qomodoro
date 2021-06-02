@@ -16,7 +16,7 @@ include(QtCommon)
 fix_project_version()
 add_project_meta(META_FILES_TO_INCLUDE)
 
-find_package(Qt5 COMPONENTS Widgets Charts REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Charts REQUIRED)
 
 include_directories(include)
 
@@ -50,10 +50,16 @@ set(SOURCE_FILES
 )
 
 set(RESOURCE_FILES resources.qrc)
-set(RC_ICONS images/icon.ico)
+
+set(app_WINRC qomodoro.rc)
+set_property(SOURCE qomodoro.rc APPEND PROPERTY
+        OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/images/icon.ico
+        )
 
 add_executable(${PROJECT_NAME} ${OS_BUNDLE} # Expands to WIN32 or MACOS_BUNDLE depending on OS
-    ${SOURCE_FILES} ${RESOURCE_FILES}
+    ${SOURCE_FILES} ${RESOURCE_FILES} ${app_WINRC}
 )
 
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Charts)
+target_link_libraries(${PROJECT_NAME} Qt6::Widgets Qt6::Charts)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
