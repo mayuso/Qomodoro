@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->minButton, &QPushButton::clicked, this, &MainWindow::MinimizeButtonClicked);
     connect(ui->closeButton, &QPushButton::clicked, this, &MainWindow::CloseButtonClicked);
 
-
     m_TimerWindow = new TimerWindow();
     connect(m_TimerWindow, &TimerWindow::sg_TimerFinished, this, &MainWindow::TimerFinished);
 

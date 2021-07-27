@@ -8,5 +8,11 @@
 		<file>stylesheets/StatsWindow.qss</file>
         <file>images/dropdown_arrow.png</file>
         <file>images/dropdown_arrow_disabled.png</file>
+        <file>images/options_icon.png</file>
+		<file>images/options_icon_highlighted.png</file>
+		<file>images/timer_icon.png</file>
+		<file>images/timer_icon_highlighted.png</file>
+		<file>images/stats_icon.png</file>
+		<file>images/stats_icon_highlighted.png</file>
     </qresource>
 </RCC>

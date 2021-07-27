@@ -55,7 +55,7 @@
      <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>0</number>
+     <number>10</number>
     </property>
     <item>
      <widget class="QWidget" name="TopBar" native="true">
@@ -229,13 +229,13 @@
          <property name="minimumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="font">
@@ -246,15 +246,15 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string notr="true">BottomButton</string>
+          <string notr="true">optionsButton</string>
          </property>
          <property name="text">
-          <string>O</string>
+          <string/>
          </property>
          <property name="iconSize">
           <size>
-           <width>32</width>
-           <height>32</height>
+           <width>16</width>
+           <height>16</height>
           </size>
          </property>
         </widget>
@@ -264,13 +264,13 @@
          <property name="minimumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="font">
@@ -281,10 +281,16 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string notr="true">BottomButton</string>
+          <string notr="true">timerButton</string>
          </property>
          <property name="text">
-          <string>T</string>
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -293,13 +299,13 @@
          <property name="minimumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>125</width>
-           <height>45</height>
+           <height>40</height>
           </size>
          </property>
          <property name="font">
@@ -310,10 +316,16 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string notr="true">BottomButton</string>
+          <string notr="true">statsButton</string>
          </property>
          <property name="text">
-          <string>S</string>
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
          </property>
         </widget>
        </item>

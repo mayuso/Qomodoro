@@ -39,16 +39,40 @@ QWidget[accessibleName="mainWidget"] {
     top: -0.5em;
 }
 
-/* ------------------------------- BOTTOM WIDGET ------------------------------- */
+/* ------------------------------- BOTTOM BUTTONS ------------------------------- */
 
-QPushButton[accessibleName="BottomButton"] {
+QPushButton[accessibleName="optionsButton"] {
     border: 0;
-    color: #9ba4b4;
     text-align: center;
     line-height: 35px;
     background-color: #2f384b;
+    image: url(":/images/options_icon.png");
 }
 
-QPushButton:hover[accessibleName="BottomButton"] {
-    color: #05eb8b;
+QPushButton:hover[accessibleName="optionsButton"] {
+    image: url(":/images/options_icon_highlighted.png");
+}
+
+QPushButton[accessibleName="timerButton"] {
+    border: 0;
+    text-align: center;
+    line-height: 35px;
+    background-color: #2f384b;
+    image: url(":/images/timer_icon.png");
+}
+
+QPushButton:hover[accessibleName="timerButton"] {
+    image: url(":/images/timer_icon_highlighted.png");
+}
+
+QPushButton[accessibleName="statsButton"] {
+    border: 0;
+    text-align: center;
+    line-height: 35px;
+    background-color: #2f384b;
+    image: url(":/images/stats_icon.png");
+}
+
+QPushButton:hover[accessibleName="statsButton"] {
+    image: url(":/images/stats_icon_highlighted.png");
 }
