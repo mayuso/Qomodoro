@@ -1,6 +1,7 @@
 #ifndef OPTIONSWINDOW_H
 #define OPTIONSWINDOW_H
 
+#include "../vendor/json/single_include/nlohmann/json.hpp"
 #include <QWidget>
 
 namespace Ui {
@@ -15,6 +16,8 @@ public:
     explicit OptionsWindow(QWidget *parent = nullptr);
     ~OptionsWindow();
 
+    void LoadConfig();
+
 public slots:
     void SetControlsEnabled(bool enabled);
 
@@ -22,6 +25,7 @@ public slots:
     void SetShortBreakTime(int time);
     void SetLongBreakTime(int time);
     void ResetValues();
+
 
 signals:
     void sg_PomodoroTimeChanged(int);

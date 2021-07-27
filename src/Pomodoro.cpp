@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <ctime>
-#include <QDir>
 
 using json = nlohmann::json;
 
@@ -85,9 +84,7 @@ void Pomodoro::TimerTicked()
 
         if(m_IsPomodoroRunning)
         {
-            QDir* dir = new QDir();
 
-            dir->mkdir("data");
 
             std::time_t t = std::time(nullptr);   // get time now
             std::tm* now = std::localtime(&t);
@@ -102,7 +99,7 @@ void Pomodoro::TimerTicked()
             };
 
 
-            json jsonData = DataIO::LoadConfig();
+            json jsonData = DataIO::LoadData();
             if(jsonData.size() > 0)
             {
                 // Append new entry to the existing list
@@ -113,7 +110,7 @@ void Pomodoro::TimerTicked()
                 // Create new entry in the empty file
                 jsonData = {newPomodoro};
             }
-            DataIO::SaveConfig(jsonData);
+            DataIO::SaveData(jsonData);
 
             emit sg_PomodoroFinished();
             StartBreak();

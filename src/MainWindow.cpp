@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_OptionsWindow, SIGNAL(sg_ShortBreakTimeChanged(int)), m_TimerWindow, SLOT(SetShortBreakTime(int)));
     connect(m_OptionsWindow, SIGNAL(sg_LongBreakTimeChanged(int)), m_TimerWindow, SLOT(SetLongBreakTime(int)));
 
+    m_OptionsWindow->LoadConfig();
 
     ui->slidingStackedWidget->addWidget(m_OptionsWindow);
     ui->slidingStackedWidget->addWidget(m_TimerWindow);
@@ -48,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->optionsButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
     connect(ui->timerButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
     connect(ui->statsButton, &QPushButton::clicked, this, &MainWindow::BottomBarButtonClicked);
+
+    QDir* dir = new QDir();
+    dir->mkdir("data");
 }
 
 MainWindow::~MainWindow()
